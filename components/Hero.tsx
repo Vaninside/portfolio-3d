@@ -5,6 +5,7 @@ import dynamic from "next/dynamic";
 import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
+import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
 
 const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground"), {
   ssr: false,
@@ -37,6 +38,10 @@ const heroItemVariantsFast: Variants = {
 export default function Hero() {
   const reducedMotion = useReducedMotion();
   const badgeRef = useRef<HTMLParagraphElement>(null);
+
+  // Initialize cursor effects
+  useCursorFollower({ color: "#6366f1", size: 10, trailLength: 4 });
+  useMagneticHover(".magnetic", { strength: 0.25, distance: 80 });
 
   // Start badge pulse animation after mount
   useEffect(() => {
