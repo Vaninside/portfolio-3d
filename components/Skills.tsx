@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useReducedMotion, type Variants, type Easing } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
   Code,
@@ -16,6 +16,20 @@ import {
   Shield,
   Globe as GlobeIcon,
 } from "lucide-react";
+import {
+  springEase,
+  springConfig,
+  containerVariants,
+  itemVariants,
+  headerVariants,
+  microVariants,
+} from "@/lib/animations";
+import {
+  animateCardHover,
+  animateBadgeHover,
+  animateIconPulse,
+  prefersReducedMotion,
+} from "@/lib/micro-interactions";
 
 const technicalSkills = [
   {
@@ -119,32 +133,7 @@ const languages = [
   { name: "Javanese", level: "Conversational", icon: GlobeIcon },
 ];
 
-// Animation constants - professional standards
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
-
-const springConfig = { type: "spring" as const, stiffness: 260, damping: 22 };
-
-// Stagger container - 30-50ms per item
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
-};
-
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30, scale: 0.98 },
-  show: { opacity: 1, y: 0, scale: 1, transition: springConfig },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, x: -10 },
-  show: { opacity: 1, x: 0, transition: { duration: 0.3, ease: springEase } },
-};
-
-const headerVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: springEase } },
-};
-
+// Skill-specific variants (not in shared lib)
 const softCardVariants: Variants = {
   hidden: { opacity: 0, y: 20, scale: 0.98 },
   show: { opacity: 1, y: 0, scale: 1, transition: springConfig },
@@ -159,6 +148,37 @@ export default function Skills() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const reducedMotion = useReducedMotion();
+  const skillCardRefs = useRef<(HTMLElement | null)[]>([]);
+  const badgeRefs = useRef<(HTMLElement | null)[]>([]);
+
+  // Attach micro-interactions
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    skillCardRefs.current.forEach((el) => {
+      if (!el) return;
+      const handleEnter = () => animateCardHover(el, "hover");
+      const handleLeave = () => animateCardHover(el, "leave");
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+      return () => {
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    });
+
+    badgeRefs.current.forEach((el) => {
+      if (!el) return;
+      const handleEnter = () => animateBadgeHover(el, "hover");
+      const handleLeave = () => animateBadgeHover(el, "leave");
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+      return () => {
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    });
+  }, [reducedMotion]);
 
   return (
     <section
@@ -199,10 +219,11 @@ export default function Skills() {
           role="list"
           aria-label="Technical skills"
         >
-          {technicalSkills.map((category) => (
+          {technicalSkills.map((category, i) => (
             <motion.article
               key={category.category}
-              variants={cardVariants}
+              ref={(el) => { skillCardRefs.current[i] = el; }}
+              variants={itemVariants.standard}
               className="group relative rounded-2xl bg-card border border-border p-6 md:p-8 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 overflow-hidden"
               whileHover={{ y: -4 }}
             >

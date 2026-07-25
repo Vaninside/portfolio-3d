@@ -18,7 +18,15 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    // Mounted state ensures theme-dependent content only renders client-side
+    // to avoid hydration mismatch (SSR renders default icon, client renders actual)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -108,18 +116,21 @@ export default function Navbar() {
               className="size-9 inline-flex items-center justify-center rounded-full hover:bg-accent/10 transition-colors"
               aria-label="Toggle theme"
             >
-              <motion.div
-                key={theme}
-                initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                {theme === "dark" ? (
-                  <Moon className="size-4" />
-                ) : (
-                  <Sun className="size-4" />
-                )}
-              </motion.div>
+              {mounted && (
+                <motion.div
+                  key={theme}
+                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {theme === "dark" ? (
+                    <Moon className="size-4" />
+                  ) : (
+                    <Sun className="size-4" />
+                  )}
+                </motion.div>
+              )}
+              {!mounted && <Moon className="size-4" />}
             </button>
 
           <button

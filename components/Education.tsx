@@ -4,16 +4,25 @@ import { motion, useInView, useReducedMotion, type Variants, type Easing } from 
 import { useRef } from "react";
 import { GraduationCap, Award, BookOpen, Calendar, Code2, Medal } from "lucide-react";
 
+import {
+  springEase,
+  springConfig,
+  stagger,
+  containerVariants,
+  itemVariants,
+  headerVariants,
+} from "@/lib/animations";
+
 const education = [
   {
-    degree: "S1 Teknik Informatika",
-    school: "Universitas Islam Indonesia",
-    location: "Yogyakarta, Indonesia",
-    period: "2020 — 2024",
-    gpa: "3.72 / 4.00",
-    thesis: "Analisis Sentimen Ulasan Aplikasi E-Commerce Menggunakan Machine Learning",
-    honors: ["Cum Laude", "Dean's List 3x", "Best Thesis Nominee"],
-    subjects: ["Pemrograman Web & Mobile", "Machine Learning", "Basis Data", "Algoritma & Struktur Data", "Rekayasa Perangkat Lunak", "Jaringan Komputer"],
+    degree: "Bachelor's Degree, Informatics Engineering",
+    school: "Telkom University",
+    location: "Campus Purwokerto",
+    period: "Sept 2022 — Feb 2026",
+    gpa: "3.75 / 4.00",
+    thesis: "Fine-tuning IndoBERT Model for Sentiment Analysis and Comparative Study of Optimizers",
+    honors: ["Top 2 selling on Telkom University Campus Purwokerto Market Day 2025"],
+    subjects: ["Machine Learning", "Deep Learning", "Natural Language Processing", "Data Mining", "Software Engineering", "Algorithm & Data Structures"],
   },
 ];
 
@@ -24,26 +33,13 @@ const certifications = [
   { name: "Google UX Design", issuer: "Google", year: "2023", icon: Medal },
 ];
 
-// Animation constants - professional standards
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
-
-const springConfig = { type: "spring" as const, stiffness: 260, damping: 22 };
-
-// Stagger container - 30-50ms per item
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
-};
-
+// Education-specific variants using shared configs
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: springConfig },
+  show: { opacity: 1, y: 0, transition: springConfig.entrance },
 };
 
-const headerVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: springEase } },
-};
+const headerVariantsLocal: Variants = headerVariants.standard;
 
 const honorVariants: Variants = {
   hidden: { opacity: 0, x: -10 },
@@ -97,7 +93,7 @@ export default function Education() {
 
         {/* Education Cards */}
         <motion.div
-          variants={containerVariants}
+          variants={containerVariants.normal}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
           className="space-y-8"

@@ -4,8 +4,14 @@ import { motion, useInView, useMotionValue, useTransform, type Variants, type Ea
 import { useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe } from "lucide-react";
+import {
+  springEase,
+  springConfig,
+  containerVariants,
+  headerVariants,
+} from "@/lib/animations";
 
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
+const springEaseLocal: Easing = springEase;
 
 const projects = [
   {
@@ -105,12 +111,12 @@ function ProjectCard({ project, index, isInView }: { project: typeof projects[0]
 
   const cardVariants: Variants = {
     hidden: { opacity: 0, y: 40, scale: 0.98 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.6, ease: springEase } },
+    show: { opacity: 1, y: 0, scale: 1, transition: springConfig.entrance },
   };
 
   const contentVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: springEase } },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: springEaseLocal } },
   };
 
   return (
@@ -200,10 +206,8 @@ export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
 
-  const headerVariants: Variants = {
-    hidden: { opacity: 0, y: 30 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: springEase } },
-  };
+  // Use shared header variants
+  const headerVariantsLocal = headerVariants.standard;
 
   return (
     <section
@@ -215,7 +219,7 @@ export default function Projects() {
       <div className="mx-auto max-w-5xl">
         {/* Section header */}
         <motion.div
-          variants={headerVariants}
+          variants={headerVariantsLocal}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
           className="text-center max-w-2xl mx-auto mb-16 md:mb-20"

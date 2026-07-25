@@ -4,27 +4,20 @@ import { motion, useInView, useReducedMotion, type Variants, type Easing } from 
 import { useRef } from "react";
 import { Code, Award, Users, Zap } from "lucide-react";
 
+import {
+  springEase,
+  springConfig,
+  containerVariants,
+  itemVariants,
+  headerVariants,
+} from "@/lib/animations";
+
 const skills = [
   { icon: Code, label: "Frontend Development", desc: "React, Next.js, TypeScript, Tailwind" },
   { icon: Award, label: "Academic Excellence", desc: "GPA 3.72/4.00, Thesis: ML Sentiment Analysis" },
   { icon: Users, label: "Leadership & Operations", desc: "Lab Assistant, Event Organizer (1000+ attendees)" },
   { icon: Zap, label: "Problem Solving", desc: "Data analysis, optimization, clean architecture" },
 ];
-
-// Spring easing - professional standard (150-300ms micro, ≤400ms complex)
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
-const springConfig = { type: "spring" as const, stiffness: 260, damping: 22 } as const;
-
-// Stagger container - 30-50ms per item
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: springConfig },
-};
 
 export default function About() {
   const ref = useRef<HTMLElement>(null);
@@ -45,10 +38,10 @@ export default function About() {
       <div className="mx-auto max-w-5xl">
         {/* Section header */}
         <motion.div
+          variants={headerVariants.standard}
+          initial="hidden"
+          animate={isInView ? "show" : "hidden"}
           className="text-center max-w-2xl mx-auto mb-16 md:mb-20"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={sectionTransition}
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold text-primary bg-primary/10 border border-primary/20 tracking-widest uppercase mb-6">
             <span className="relative flex h-1.5 w-1.5">
@@ -75,13 +68,13 @@ export default function About() {
             className="space-y-6 text-muted-foreground leading-relaxed"
           >
             <p className="text-lg md:text-xl font-medium text-foreground">
-              Informatics Engineering graduate from <span className="font-semibold text-foreground">Universitas Islam Indonesia</span> with a passion for building clean, performant web experiences.
+              Informatics Engineering graduate with a passion for building clean, performant web experiences.
             </p>
             <p>
-              I bridge technical expertise with operational leadership &mdash; from guiding students as a Software Construction Laboratory Assistant to orchestrating logistics for <strong>Todays 2025</strong>, the premier campus event by BEM KEMA UII with 1000+ attendees.
+              I bridge technical expertise with operational leadership &mdash; from guiding students as a Software Construction Laboratory Assistant to orchestrating large-scale logistics for <strong>Todays 2025</strong>, the premier campus event by BEM KEMA Telkom University Purwokerto.
             </p>
             <p>
-              My focus: <span className="font-medium text-foreground">frontend architecture</span>, <span className="font-medium text-foreground">type-safe development</span>, and <span className="font-medium text-foreground">accessible interfaces</span>. I thrive in fast-paced environments where analytical problem-solving meets real-world impact.
+              Adept at front-end development, data analysis, and coordinating complex projects. Ready to leverage analytical problem-solving skills and hands-on operational experience to drive impactful results in a fast-paced professional environment.
             </p>
 
             {/* Highlights */}

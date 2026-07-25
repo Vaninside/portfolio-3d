@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, type Variants, type Easing } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Mail,
@@ -16,15 +16,21 @@ import {
   FileText,
   GitBranch,
 } from "lucide-react";
-
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
-
-const springConfig = { type: "spring" as const, stiffness: 260, damping: 22 } as const;
-
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
-};
+import {
+  springEase,
+  springConfig,
+  stagger,
+  containerVariants,
+  itemVariants,
+  microVariants,
+  getTransition,
+} from "@/lib/animations";
+import {
+  animateButtonHover,
+  animateCardHover,
+  animateSocialHover,
+  prefersReducedMotion,
+} from "@/lib/micro-interactions";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
@@ -100,6 +106,56 @@ export default function Contact() {
     message: "",
   });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const reducedMotion = prefersReducedMotion();
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const socialRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
+  // Attach micro-interactions on mount
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    // Contact info cards
+    cardRefs.current.forEach((el) => {
+      if (!el) return;
+      const handleEnter = () => animateCardHover(el, "hover");
+      const handleLeave = () => animateCardHover(el, "leave");
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+      return () => {
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    });
+
+    // Social links
+    socialRefs.current.forEach((el) => {
+      if (!el) return;
+      const handleEnter = () => animateSocialHover(el, "hover");
+      const handleLeave = () => animateSocialHover(el, "leave");
+      el.addEventListener("mouseenter", handleEnter);
+      el.addEventListener("mouseleave", handleLeave);
+      return () => {
+        el.removeEventListener("mouseenter", handleEnter);
+        el.removeEventListener("mouseleave", handleLeave);
+      };
+    });
+
+    // Hire me button
+    const hireBtn = document.querySelector('[data-hire-btn]');
+    if (hireBtn) {
+      const handleEnter = () => animateButtonHover(hireBtn as HTMLElement, "hover");
+      const handleLeave = () => animateButtonHover(hireBtn as HTMLElement, "leave");
+      const handleTap = () => animateButtonHover(hireBtn as HTMLElement, "tap");
+      hireBtn.addEventListener("mouseenter", handleEnter);
+      hireBtn.addEventListener("mouseleave", handleLeave);
+      hireBtn.addEventListener("mousedown", handleTap);
+      return () => {
+        hireBtn.removeEventListener("mouseenter", handleEnter);
+        hireBtn.removeEventListener("mouseleave", handleLeave);
+        hireBtn.removeEventListener("mousedown", handleTap);
+      };
+    }
+  }, [reducedMotion]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -158,12 +214,12 @@ export default function Contact() {
         >
           {/* Contact Info Cards - 2 columns */}
           <div className="lg:col-span-2 space-y-6" role="list" aria-label="Contact information">
-            {contactInfo.map((item) => (
+            {contactInfo.map((item, index) => (
               <motion.article
                 key={item.label}
+                ref={(el) => { cardRefs.current[index] = el; }}
                 variants={cardVariants}
                 className="group relative flex items-start gap-4 p-5 md:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
-                whileHover={{ y: -4 }}
               >
                 <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
                   <item.icon className="size-6" aria-hidden="true" />
@@ -199,19 +255,18 @@ export default function Contact() {
           {/* Social Links */}
           <motion.div
             variants={cardVariants}
-            className="space-y-4"
             style={{ gridColumn: "span 1" }}
           >
             <h3 className="font-bold text-lg mb-4">Connect With Me</h3>
             <div className="space-y-3" role="list" aria-label="Social links">
-              {socialLinks.map((social) => (
+              {socialLinks.map((social, index) => (
                 <motion.a
                   key={social.label}
+                  ref={(el) => { socialRefs.current[index] = el; }}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   variants={socialVariants}
-                  whileHover={{ x: 4 }}
                   className={`group flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 ${social.color}`}
                 >
                   <social.icon className="size-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
@@ -224,6 +279,7 @@ export default function Contact() {
             {/* Quick CTA buttons */}
             <div className="mt-8 pt-6 border-t border-border space-y-3">
               <a
+                data-hire-btn
                 href="mailto:evanrafifpradana@gmail.com?subject=Job Opportunity&body=Hi Evan,%0D%0A%0D%0AI came across your portfolio and..."
                 className="flex w-full items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
               >

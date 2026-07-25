@@ -3,6 +3,13 @@
 import { motion, useInView, type Variants, type Easing } from "framer-motion";
 import { useRef } from "react";
 import { Handshake, Users, CheckCircle } from "lucide-react";
+import {
+  springEase,
+  springConfig,
+  containerVariants,
+  itemVariants,
+  headerVariants,
+} from "@/lib/animations";
 
 const orgs = [
   {
@@ -39,25 +46,15 @@ const orgs = [
   },
 ];
 
-// Animation constants - professional standards
-const springEase: Easing = [0.22, 1, 0.36, 1] as const;
-
-const springConfig = { type: "spring" as const, stiffness: 260, damping: 22 };
-
-// Stagger container - 30-50ms per item
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.1 } },
-};
-
+// Organization-specific variants using shared configs
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
-  show: { opacity: 1, y: 0, scale: 1, transition: springConfig },
+  show: { opacity: 1, y: 0, scale: 1, transition: springConfig.standard },
 };
 
-const headerVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: springEase } },
+const dotVariants: Variants = {
+  hidden: { scale: 0 },
+  show: { scale: 1, transition: { duration: 0.4, ease: springEase } },
 };
 
 const pointVariants: Variants = {
@@ -80,6 +77,8 @@ const periodVariants: Variants = {
   show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: springEase } },
 };
 
+const headerVariantsLocal: Variants = headerVariants.standard;
+
 export default function Organization() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
@@ -94,7 +93,7 @@ export default function Organization() {
       <div className="mx-auto max-w-5xl">
         {/* Section header */}
         <motion.div
-          variants={headerVariants}
+          variants={headerVariantsLocal}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
           className="text-center max-w-2xl mx-auto mb-16 md:mb-20"
@@ -116,7 +115,7 @@ export default function Organization() {
 
         {/* Organization cards grid */}
         <motion.div
-          variants={containerVariants}
+          variants={containerVariants.normal}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
           className="grid gap-8 md:grid-cols-2"

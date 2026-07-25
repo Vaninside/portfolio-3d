@@ -1,54 +1,49 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
+import { animateBadgePulse } from "@/lib/micro-interactions";
 
 const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground"), {
   ssr: false,
   loading: () => null,
 });
 
-// Spring easing - professional standard (150-300ms micro, ≤400ms complex)
-const springConfig = { type: "spring", stiffness: 260, damping: 22 } as const;
-const springConfigSlow = { type: "spring", stiffness: 180, damping: 18 } as const;
-const springConfigFast = { type: "spring", stiffness: 340, damping: 26 } as const;
+import {
+  springConfig,
+  stagger,
+  containerVariants,
+  itemVariants,
+  headerVariants,
+  microVariants,
+  getTransition,
+} from "@/lib/animations";
 
-// Stagger container for entrance animations - 30-50ms per item (staggerChildren: 0.04)
-const containerVariants: Variants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.04, delayChildren: 0.08 } },
-};
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: springConfig },
-};
-
-const itemVariantsSlow: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: springConfigSlow },
-};
-
-const itemVariantsFast: Variants = {
-  hidden: { opacity: 0, y: 16 },
-  show: { opacity: 1, y: 0, transition: springConfigFast },
-};
-
-// Floating badge variant
-const badgeVariants: Variants = {
+// Use shared animation configs - overrides for Hero-specific needs
+const heroContainerVariants: Variants = containerVariants.normal;
+const heroItemVariants: Variants = itemVariants.standard;
+const heroItemVariantsSlow: Variants = itemVariants.slow;
+const heroItemVariantsFast: Variants = itemVariants.fast;
+const heroBadgeVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9, y: 10 },
-  show: { opacity: 1, scale: 1, y: 0, transition: { ...springConfig, delay: 0.05 } },
+  show: { opacity: 1, scale: 1, y: 0, transition: { ...springConfig.standard, delay: 0.05 } },
 };
 
 export default function Hero() {
   const reducedMotion = useReducedMotion();
+  const badgeRef = useRef<HTMLParagraphElement>(null);
+
+  // Start badge pulse animation after mount
+  useEffect(() => {
+    if (!reducedMotion && badgeRef.current) {
+      animateBadgePulse(badgeRef.current);
+    }
+  }, [reducedMotion]);
 
   // Respect prefers-reduced-motion
-  const transition = reducedMotion
-    ? { duration: 0.01 }
-    : { type: "spring" as const, stiffness: 260, damping: 22 };
+  const transition = getTransition(reducedMotion ?? false, springConfig.standard);
 
   // Handle CTA smooth scroll
   useEffect(() => {
@@ -106,7 +101,8 @@ export default function Hero() {
       >
         {/* Floating badge */}
         <motion.p
-          variants={badgeVariants}
+          ref={badgeRef}
+          variants={heroBadgeVariants}
           className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium tracking-wider uppercase bg-primary/10 text-primary border border-primary/20 backdrop-blur-sm mb-6"
         >
           <span className="relative flex h-1.5 w-1.5">
@@ -126,7 +122,7 @@ export default function Hero() {
         >
           <span className="block">Evan Rafif</span>
           <motion.span
-            variants={itemVariantsSlow}
+            variants={heroItemVariantsSlow}
             className="block bg-linear-to-r from-primary via-primary/80 to-violet-500 bg-clip-text text-transparent animate-gradient-x"
             style={{
               animation: "gradient-shift 4s ease-in-out infinite",
@@ -148,7 +144,7 @@ export default function Hero() {
 
         {/* CTA Buttons - staggered with spring hover/tap */}
         <motion.div
-          variants={itemVariantsFast}
+          variants={heroItemVariantsFast}
           className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
           {/* Primary CTA - Contact */}

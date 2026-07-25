@@ -1,11 +1,19 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, extend } from "@react-three/fiber";
 import { Float, MeshTransmissionMaterial } from "@react-three/drei";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { Mesh } from "three";
+import { Mesh, TorusGeometry, IcosahedronGeometry, OctahedronGeometry, DodecahedronGeometry, SphereGeometry } from "three";
 import { useTheme } from "next-themes";
+
+extend({
+  torusGeometry: TorusGeometry,
+  icosahedronGeometry: IcosahedronGeometry,
+  octahedronGeometry: OctahedronGeometry,
+  dodecahedronGeometry: DodecahedronGeometry,
+  sphereGeometry: SphereGeometry,
+});
 
 const geometries = {
   torus: <torusGeometry args={[1.3, 0.35, 32, 64]} />,
@@ -122,15 +130,15 @@ export default function ThreeBackground() {
         {colors.shapes.map((shape, i) => (
           <FloatingShape key={i} {...shape} />
         ))}
-
-        {/* Subtle gradient overlay for depth */}
-        <div
-          className="fixed inset-0 -z-10 pointer-events-none"
-          style={{
-            background: `radial-gradient(ellipse at 50% 30%, ${colors.gradient1} 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, ${colors.gradient2} 0%, transparent 50%)`,
-          }}
-        />
       </Canvas>
+
+      {/* Subtle gradient overlay for depth - outside Canvas */}
+      <div
+        className="fixed inset-0 -z-10 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 50% 30%, ${colors.gradient1} 0%, transparent 60%), radial-gradient(ellipse at 80% 70%, ${colors.gradient2} 0%, transparent 50%)`,
+        }}
+      />
     </div>
   );
 }
