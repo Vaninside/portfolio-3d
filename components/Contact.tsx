@@ -27,6 +27,7 @@ import {
   animateSocialHover,
   prefersReducedMotion,
 } from "@/lib/micro-interactions";
+import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
@@ -48,43 +49,6 @@ const formVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: springEase } },
 };
 
-const contactInfo = [
-  {
-    label: "Email",
-    value: "evanrafifpradana@gmail.com",
-    icon: Mail,
-    href: "mailto:evanrafifpradana@gmail.com",
-    description: "Primary contact for opportunities",
-  },
-  {
-    label: "Phone",
-    value: "+62 8xx-xxxx-xxxx",
-    icon: Phone,
-    href: "tel:+628xxxxxxxxxx",
-    description: "WhatsApp / Call available",
-  },
-  {
-    label: "Location",
-    value: "Yogyakarta, Indonesia",
-    icon: MapPin,
-    href: "https://maps.google.com/?q=Yogyakarta,Indonesia",
-    description: "Open to relocation & remote",
-  },
-  {
-    label: "Availability",
-    value: "Full-time / Freelance",
-    icon: Clock,
-    href: "#",
-    description: "Immediate start available",
-  },
-];
-
-const socialLinks = [
-  { label: "GitHub", icon: GitBranch, href: "https://github.com/vaninside", color: "hover:text-gray-400 dark:hover:text-gray-500" },
-  { label: "LinkedIn", icon: ExternalLink, href: "https://linkedin.com/in/evanrafifpradana", color: "hover:text-primary/80 dark:hover:text-primary" },
-  { label: "Twitter / X", icon: ExternalLink, href: "https://x.com/vaninside", color: "hover:text-sky-500" },
-];
-
 interface FormState {
   name: string;
   email: string;
@@ -92,7 +56,34 @@ interface FormState {
   message: string;
 }
 
+interface ContactInfoItem {
+  label: string;
+  value: string;
+  icon: string;
+  href: string;
+  description: string;
+}
+
+interface SocialLinkItem {
+  label: string;
+  icon: string;
+  href: string;
+  color: string;
+}
+
+type IconName = keyof typeof iconMap;
+const iconMap = {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  GitBranch,
+  ExternalLink,
+  Send,
+};
+
 export default function Contact() {
+  const { t } = useTranslation();
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState<FormState>({
@@ -160,11 +151,19 @@ export default function Contact() {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormState> = {};
-    if (!formState.name.trim()) newErrors.name = "Name is required";
-    if (!formState.email.trim()) newErrors.email = "Email is required";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) newErrors.email = "Invalid email format";
-    if (!formState.subject.trim()) newErrors.subject = "Subject is required";
-    if (!formState.message.trim()) newErrors.message = "Message is required";
+    const validation = t("contact.form.validation", { returnObjects: true }) as {
+      nameRequired: string;
+      emailRequired: string;
+      emailInvalid: string;
+      subjectRequired: string;
+      messageRequired: string;
+    };
+
+    if (!formState.name.trim()) newErrors.name = validation.nameRequired;
+    if (!formState.email.trim()) newErrors.email = validation.emailRequired;
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) newErrors.email = validation.emailInvalid;
+    if (!formState.subject.trim()) newErrors.subject = validation.subjectRequired;
+    if (!formState.message.trim()) newErrors.message = validation.messageRequired;
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -196,6 +195,37 @@ export default function Contact() {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const contactInfo = t("contact.contactInfo", { returnObjects: true }) as ContactInfoItem[];
+  const socialLinks = t("contact.socialLinks", { returnObjects: true }) as SocialLinkItem[];
+  const formLabels = t("contact.form", { returnObjects: true }) as {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+    send: string;
+    sending: string;
+    success: string;
+    error: string;
+    placeholder: { name: string; email: string; message: string };
+    subjectOptions: { select: string; job: string; freelance: string; collaboration: string; mentoring: string; other: string };
+    validation: { nameRequired: string; emailRequired: string; emailInvalid: string; subjectRequired: string; messageRequired: string };
+  };
+  const footer = t("contact", { returnObjects: true }) as {
+    footerNote: string;
+    privacyPolicy: string;
+    termsOfService: string;
+    bySubmitting: string;
+  };
+  const contactSection = t("contact", { returnObjects: true }) as {
+    title: string;
+    subtitle: string;
+    description: string;
+    connectWithMe: string;
+    sendMessage: string;
+    hireMe: string;
+    downloadCv: string;
+  };
+
   return (
     <section
       ref={ref}
@@ -216,13 +246,13 @@ export default function Contact() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            Contact
+            {contactSection.title}
           </span>
           <h2 id="contact-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            Let&apos;s <span className="text-primary">Build</span> Something
+            {contactSection.subtitle}
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Have a project in mind or just want to say hi? I&apos;d love to hear from you.
+            {contactSection.description}
           </p>
         </motion.div>
 
@@ -235,16 +265,18 @@ export default function Contact() {
         >
           {/* Contact Info Cards - 2 columns */}
           <div className="lg:col-span-2 space-y-6" role="list" aria-label="Contact information">
-            {contactInfo.map((item, index) => (
-              <motion.article
-                key={item.label}
-                ref={(el) => { cardRefs.current[index] = el; }}
-                variants={cardVariants}
-                className="group relative flex items-start gap-4 p-5 md:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
-              >
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                  <item.icon className="size-6" aria-hidden="true" />
-                </div>
+            {contactInfo.map((item, index) => {
+              const IconComponent = iconMap[item.icon as IconName];
+              return (
+                <motion.article
+                  key={item.label}
+                  ref={(el) => { cardRefs.current[index] = el; }}
+                  variants={cardVariants}
+                  className="group relative flex items-start gap-4 p-5 md:p-6 rounded-2xl bg-card border border-border hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                    {IconComponent && <IconComponent className="size-6" aria-hidden="true" />}
+                  </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors">{item.label}</h3>
@@ -270,7 +302,8 @@ export default function Contact() {
                 {/* Accent indicator */}
                 <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-primary to-violet-500 rounded-l-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" aria-hidden="true" />
               </motion.article>
-            ))}
+              )
+            })}
           </div>
 
           {/* Social Links */}
@@ -278,23 +311,26 @@ export default function Contact() {
             variants={cardVariants}
             style={{ gridColumn: "span 1" }}
           >
-            <h3 className="font-bold text-lg mb-4">Connect With Me</h3>
+            <h3 className="font-bold text-lg mb-4">{contactSection.connectWithMe}</h3>
             <div className="space-y-3" role="list" aria-label="Social links">
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  ref={(el) => { socialRefs.current[index] = el; }}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  variants={socialVariants}
-                  className={`group flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 ${social.color}`}
-                >
-                  <social.icon className="size-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
+              {socialLinks.map((social, index) => {
+                const SocialIcon = iconMap[social.icon as IconName];
+                return (
+                  <motion.a
+                    key={social.label}
+                    ref={(el) => { socialRefs.current[index] = el; }}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variants={socialVariants}
+                    className={`group flex items-center gap-3 px-4 py-3 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg transition-all duration-300 ${social.color}`}
+                  >
+                    <SocialIcon className="size-5 group-hover:scale-110 transition-transform" aria-hidden="true" />
                   <span className="font-medium">{social.label}</span>
                   <ArrowRight className="size-4 ml-auto group-hover:translate-x-1 transition-transform" />
                 </motion.a>
-              ))}
+                )
+              })}
             </div>
 
             {/* Quick CTA buttons */}
@@ -305,7 +341,7 @@ export default function Contact() {
                 className="flex w-full items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
               >
                 <Mail className="size-4" aria-hidden="true" />
-                Hire Me
+                {contactSection.hireMe}
               </a>
               <a
                 href="/cv.pdf"
@@ -313,7 +349,7 @@ export default function Contact() {
                 className="flex w-full items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300"
               >
                 <FileText className="size-4" aria-hidden="true" />
-                Download CV
+                {contactSection.downloadCv}
               </a>
             </div>
           </motion.div>
@@ -329,14 +365,14 @@ export default function Contact() {
               animate={isInView ? "show" : "hidden"}
               className="rounded-2xl bg-card border border-border p-6 md:p-8"
             >
-              <h3 className="text-2xl font-bold tracking-tight mb-6">Send a Message</h3>
+              <h3 className="text-2xl font-bold tracking-tight mb-6">{contactSection.sendMessage}</h3>
 
               <form onSubmit={handleSubmit} className="space-y-5" noValidate>
                 {/* Form fields grid */}
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
-                      Name <span className="text-primary" aria-hidden="true">*</span>
+                      {formLabels.name} <span className="text-primary" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="text"
@@ -346,7 +382,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50"
-                      placeholder="Evan Rafif Pradana"
+                      placeholder={formLabels.placeholder.name}
                       aria-required="true"
                       aria-invalid={!!errors.name}
                       aria-describedby={errors.name ? "name-error" : undefined}
@@ -359,7 +395,7 @@ export default function Contact() {
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
-                      Email <span className="text-primary" aria-hidden="true">*</span>
+                      {formLabels.email} <span className="text-primary" aria-hidden="true">*</span>
                     </label>
                     <input
                       type="email"
@@ -369,7 +405,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                       className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50"
-                      placeholder="evan@example.com"
+                      placeholder={formLabels.placeholder.email}
                       aria-required="true"
                       aria-invalid={!!errors.email}
                       aria-describedby={errors.email ? "email-error" : undefined}
@@ -384,7 +420,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="subject" className="block text-sm font-medium mb-2">
-                    Subject <span className="text-primary" aria-hidden="true">*</span>
+                    {formLabels.subject} <span className="text-primary" aria-hidden="true">*</span>
                   </label>
                   <select
                     id="subject"
@@ -396,12 +432,12 @@ export default function Contact() {
                     aria-invalid={!!errors.subject}
                     aria-describedby={errors.subject ? "subject-error" : undefined}
                   >
-                    <option value="">Select a topic</option>
-                    <option value="job">Job Opportunity</option>
-                    <option value="freelance">Freelance Project</option>
-                    <option value="collaboration">Collaboration</option>
-                    <option value="mentoring">Mentoring / Speaking</option>
-                    <option value="other">Other</option>
+                    <option value="">{formLabels.subjectOptions.select}</option>
+                    <option value="job">{formLabels.subjectOptions.job}</option>
+                    <option value="freelance">{formLabels.subjectOptions.freelance}</option>
+                    <option value="collaboration">{formLabels.subjectOptions.collaboration}</option>
+                    <option value="mentoring">{formLabels.subjectOptions.mentoring}</option>
+                    <option value="other">{formLabels.subjectOptions.other}</option>
                   </select>
                   {errors.subject && (
                     <p id="subject-error" className="mt-1.5 text-sm text-red-500 dark:text-red-400" role="alert">
@@ -412,7 +448,7 @@ export default function Contact() {
 
                 <div>
                   <label htmlFor="message" className="block text-sm font-medium mb-2">
-                    Message <span className="text-primary" aria-hidden="true">*</span>
+                    {formLabels.message} <span className="text-primary" aria-hidden="true">*</span>
                   </label>
                   <textarea
                     id="message"
@@ -422,7 +458,7 @@ export default function Contact() {
                     required
                     rows={5}
                     className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50 resize-none"
-                    placeholder="Tell me about your project, role, or just say hi..."
+                    placeholder={formLabels.placeholder.message}
                     aria-required="true"
                     aria-invalid={!!errors.message}
                     aria-describedby={errors.message ? "message-error" : undefined}
@@ -446,17 +482,17 @@ export default function Contact() {
                       {submitStatus === "submitting" ? (
                         <>
                           <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                          Sending...
+                          {formLabels.sending}
                         </>
                       ) : submitStatus === "success" ? (
                         <>
                           <CheckCircle className="size-4" aria-hidden="true" />
-                          Sent Successfully!
+                          {formLabels.success}
                         </>
                       ) : (
                         <>
                           <Send className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-                          Send Message
+                          {formLabels.send}
                         </>
                       )}
                     </span>
@@ -481,20 +517,20 @@ export default function Contact() {
                       className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400"
                     >
                       <CheckCircle className="size-4" />
-                      Message sent! I&apos;ll get back to you soon.
+                      {formLabels.success}
                     </motion.div>
                   )}
                 </div>
 
                 {/* Form footer */}
                 <p className="text-xs text-muted-foreground/70 text-center">
-                  By submitting, you agree to my{' '}
+                  {footer.bySubmitting}{' '}
                   <a href="#privacy" className="underline hover:text-primary transition-colors">
-                    Privacy Policy
+                    {footer.privacyPolicy}
                   </a>{' '}
                   &{' '}
                   <a href="#terms" className="underline hover:text-primary transition-colors">
-                    Terms of Service
+                    {footer.termsOfService}
                   </a>
                 </p>
               </form>
@@ -510,7 +546,7 @@ export default function Contact() {
           className="mt-16 text-center"
         >
           <p className="text-sm text-muted-foreground">
-            Prefer a direct email?{' '}
+            {footer.footerNote}{' '}
             <a href="mailto:evanrafifpradana@gmail.com" className="font-medium text-primary hover:underline">
               evanrafifpradana@gmail.com
             </a>
