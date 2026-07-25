@@ -6,6 +6,8 @@ import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
 import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import { MatrixText } from "@/components/ui/MatrixText";
 
 const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground"), {
   ssr: false,
@@ -25,11 +27,6 @@ const heroBadgeVariants: Variants = {
   show: { opacity: 1, scale: 1, y: 0, transition: { ...springConfig.standard, delay: 0.05 } },
 };
 
-const heroItemVariantsSlow: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: springConfig.entrance },
-};
-
 const heroItemVariantsFast: Variants = {
   hidden: { opacity: 0, y: 12 },
   show: { opacity: 1, y: 0, transition: springConfig.micro },
@@ -37,6 +34,7 @@ const heroItemVariantsFast: Variants = {
 
 export default function Hero() {
   const reducedMotion = useReducedMotion();
+  const { t } = useTranslation();
   const badgeRef = useRef<HTMLParagraphElement>(null);
 
   // Initialize cursor effects
@@ -120,25 +118,42 @@ export default function Hero() {
             />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
           </span>
-          Informatics Engineering Graduate
+          {t("hero.badge")}
         </motion.p>
 
-        {/* Name - staggered */}
+        {/* Name - staggered with matrix effect */}
         <motion.h1
           variants={itemVariants}
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] text-balance"
         >
-          <span className="block">Evan Rafif</span>
-          <motion.span
-            variants={heroItemVariantsSlow}
-            className="block bg-linear-to-r from-primary via-primary/80 to-violet-500 bg-clip-text text-transparent animate-gradient-x"
-            style={{
-              animation: "gradient-shift 4s ease-in-out infinite",
-              backgroundSize: "200% 200%",
-            }}
-          >
-            Pradana
-          </motion.span>
+          <div className="flex flex-col leading-[1.0]">
+            <MatrixText
+              text="Evan Rafif"
+              className="block"
+              fontSize="text-4xl sm:text-6xl md:text-7xl lg:text-8xl"
+              fontWeight="font-bold"
+              fontFamily=""
+              letterAnimationDuration={600}
+              letterInterval={100}
+              scrambleColor="#6366f1"
+              matrixChars="01"
+              loop={false}
+              initialDelay={800}
+            />
+            <MatrixText
+              text="Pradana"
+              className="block -mt-1"
+              fontSize="text-4xl sm:text-6xl md:text-7xl lg:text-8xl"
+              fontWeight="font-bold"
+              fontFamily=""
+              letterAnimationDuration={600}
+              letterInterval={100}
+              scrambleColor="#3b82f6"
+              matrixChars="01"
+              loop={false}
+              initialDelay={1000}
+            />
+          </div>
         </motion.h1>
 
         {/* Subtitle - staggered */}
@@ -146,8 +161,7 @@ export default function Hero() {
           variants={itemVariants}
           className="mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-balance"
         >
-          Frontend developer & problem solver. Passionate about building clean,
-          performant web experiences that make a difference.
+          {t("hero.subtitle")}
         </motion.p>
 
         {/* CTA Buttons - staggered with spring hover/tap */}
@@ -167,7 +181,7 @@ export default function Hero() {
             whileTap={reducedMotion ? {} : { scale: 0.98 }}
             transition={transition}
           >
-            <span className="relative z-10">Get in Touch</span>
+            <span className="relative z-10">{t("hero.ctaContact")}</span>
             <motion.span
               className="absolute inset-0 bg-linear-to-r from-violet-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100"
               style={{ backgroundSize: "200% 200%" }}
@@ -196,7 +210,7 @@ export default function Hero() {
             transition={transition}
           >
             <Download className="size-4" />
-            <span className="relative z-10">Download CV</span>
+            <span className="relative z-10">{t("hero.ctaCv")}</span>
           </motion.a>
         </motion.div>
 

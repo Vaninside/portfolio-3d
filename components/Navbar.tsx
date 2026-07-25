@@ -1,38 +1,37 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
-import { Moon, Sun, Menu, X } from "lucide-react";
-import { useTheme } from "next-themes";
+import { useEffect, useState, useCallback, useMemo } from "react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-const navLinks = [
-  { label: "About", href: "#about" },
-  { label: "Experience", href: "#experience" },
-  { label: "Projects", href: "#projects" },
-  { label: "Skills", href: "#skills" },
-  { label: "Contact", href: "#contact" },
-];
+import { useTranslation } from "@/lib/i18n/useTranslation";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 export default function Navbar() {
+  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  useEffect(() => {
-    // Mounted state ensures theme-dependent content only renders client-side
-    // to avoid hydration mismatch (SSR renders default icon, client renders actual)
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setMounted(true);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // nav links - memoized to avoid recreation on each render
+  const navLinks = useMemo(
+    () => [
+      { label: t("nav.about" as const), href: "#about" },
+      { label: t("nav.experience" as const), href: "#experience" },
+      { label: t("nav.projects" as const), href: "#projects" },
+      { label: t("nav.skills" as const), href: "#skills" },
+      { label: t("nav.contact" as const), href: "#contact" },
+      // Test: this should cause a TypeScript error if uncommented
+      // { label: t("nav.nonexistent" as const), href: "#test" },
+    ],
+    [t]
+  );
 
   // active section tracking via IntersectionObserver
   useEffect(() => {
@@ -53,7 +52,7 @@ export default function Navbar() {
     });
 
     return () => observers.forEach((o) => o.disconnect());
-  }, []);
+  }, [navLinks]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
@@ -111,28 +110,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-            <button
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-              className="size-9 inline-flex items-center justify-center rounded-full hover:bg-accent/10 transition-colors"
-              aria-label="Toggle theme"
-            >
-              {mounted && (
-                <motion.div
-                  key={theme}
-                  initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
-                  animate={{ rotate: 0, opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {theme === "dark" ? (
-                    <Moon className="size-4" />
-                  ) : (
-                    <Sun className="size-4" />
-                  )}
-                </motion.div>
-              )}
-              {!mounted && <Moon className="size-4" />}
-            </button>
-
+            <LanguageSwitcher />
           <button
             onClick={() => setOpen(!open)}
             className="md:hidden size-9 inline-flex items-center justify-center rounded-full hover:bg-accent/10 transition-colors"
