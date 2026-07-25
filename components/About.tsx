@@ -14,7 +14,7 @@ import {
 
 const skills = [
   { icon: Code, label: "Frontend Development", desc: "React, Next.js, TypeScript, Tailwind" },
-  { icon: Award, label: "Academic Excellence", desc: "GPA 3.72/4.00, Thesis: ML Sentiment Analysis" },
+  { icon: Award, label: "Academic Excellence", desc: "GPA 3.75/4.00, Thesis: IndoBERT Sentiment Analysis" },
   { icon: Users, label: "Leadership & Operations", desc: "Lab Assistant, Event Organizer (1000+ attendees)" },
   { icon: Zap, label: "Problem Solving", desc: "Data analysis, optimization, clean architecture" },
 ];
@@ -134,11 +134,11 @@ export default function About() {
                 {/* Quick stats */}
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
-                    <div className="text-3xl font-bold tracking-tight text-primary">3.72</div>
+                    <div className="text-3xl font-bold tracking-tight text-primary">3.75</div>
                     <div className="text-xs text-muted-foreground">GPA</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
-                    <div className="text-3xl font-bold tracking-tight text-primary">4+</div>
+                    <div className="text-3xl font-bold tracking-tight text-primary">2+</div>
                     <div className="text-xs text-muted-foreground">Projects</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
@@ -146,7 +146,7 @@ export default function About() {
                     <div className="text-xs text-muted-foreground">Internships</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
-                    <div className="text-3xl font-bold tracking-tight text-primary">10+</div>
+                    <div className="text-3xl font-bold tracking-tight text-primary">5+</div>
                     <div className="text-xs text-muted-foreground">Certifications</div>
                   </div>
                 </div>

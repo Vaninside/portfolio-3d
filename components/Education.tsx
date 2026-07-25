@@ -31,6 +31,7 @@ const certifications = [
   { name: "TypeScript Professional", issuer: "Microsoft", year: "2024", icon: Code2 },
   { name: "AWS Cloud Practitioner", issuer: "Amazon Web Services", year: "2023", icon: Award },
   { name: "Google UX Design", issuer: "Google", year: "2023", icon: Medal },
+  { name: "Next.js App Router Mastery", issuer: "Vercel", year: "2024", icon: Code2 },
 ];
 
 // Education-specific variants using shared configs
