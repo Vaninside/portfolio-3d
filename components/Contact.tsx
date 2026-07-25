@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, type Variants } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,11 +19,7 @@ import {
 import {
   springEase,
   springConfig,
-  stagger,
   containerVariants,
-  itemVariants,
-  microVariants,
-  getTransition,
 } from "@/lib/animations";
 import {
   animateButtonHover,
@@ -106,6 +102,7 @@ export default function Contact() {
     message: "",
   });
   const [submitStatus, setSubmitStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [errors, setErrors] = useState<Partial<FormState>>({});
   const reducedMotion = prefersReducedMotion();
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
   const socialRefs = useRef<(HTMLAnchorElement | null)[]>([]);
@@ -114,6 +111,8 @@ export default function Contact() {
   useEffect(() => {
     if (reducedMotion) return;
 
+    const cleanupHandlers: Array<{ el: HTMLElement; type: string; fn: EventListener }> = [];
+
     // Contact info cards
     cardRefs.current.forEach((el) => {
       if (!el) return;
@@ -121,10 +120,8 @@ export default function Contact() {
       const handleLeave = () => animateCardHover(el, "leave");
       el.addEventListener("mouseenter", handleEnter);
       el.addEventListener("mouseleave", handleLeave);
-      return () => {
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
+      cleanupHandlers.push({ el, type: "mouseenter", fn: handleEnter });
+      cleanupHandlers.push({ el, type: "mouseleave", fn: handleLeave });
     });
 
     // Social links
@@ -134,32 +131,56 @@ export default function Contact() {
       const handleLeave = () => animateSocialHover(el, "leave");
       el.addEventListener("mouseenter", handleEnter);
       el.addEventListener("mouseleave", handleLeave);
-      return () => {
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
+      cleanupHandlers.push({ el, type: "mouseenter", fn: handleEnter });
+      cleanupHandlers.push({ el, type: "mouseleave", fn: handleLeave });
     });
 
     // Hire me button
     const hireBtn = document.querySelector('[data-hire-btn]');
     if (hireBtn) {
-      const handleEnter = () => animateButtonHover(hireBtn as HTMLElement, "hover");
-      const handleLeave = () => animateButtonHover(hireBtn as HTMLElement, "leave");
-      const handleTap = () => animateButtonHover(hireBtn as HTMLElement, "tap");
-      hireBtn.addEventListener("mouseenter", handleEnter);
-      hireBtn.addEventListener("mouseleave", handleLeave);
-      hireBtn.addEventListener("mousedown", handleTap);
-      return () => {
-        hireBtn.removeEventListener("mouseenter", handleEnter);
-        hireBtn.removeEventListener("mouseleave", handleLeave);
-        hireBtn.removeEventListener("mousedown", handleTap);
-      };
+      const hireBtnEl = hireBtn as HTMLElement;
+      const handleEnter = () => animateButtonHover(hireBtnEl, "hover");
+      const handleLeave = () => animateButtonHover(hireBtnEl, "leave");
+      const handleTap = () => animateButtonHover(hireBtnEl, "tap");
+      hireBtnEl.addEventListener("mouseenter", handleEnter);
+      hireBtnEl.addEventListener("mouseleave", handleLeave);
+      hireBtnEl.addEventListener("mousedown", handleTap);
+      cleanupHandlers.push({ el: hireBtnEl, type: "mouseenter", fn: handleEnter });
+      cleanupHandlers.push({ el: hireBtnEl, type: "mouseleave", fn: handleLeave });
+      cleanupHandlers.push({ el: hireBtnEl, type: "mousedown", fn: handleTap });
     }
+
+    // Cleanup function
+    return () => {
+      cleanupHandlers.forEach(({ el, type, fn }) => {
+        el.removeEventListener(type, fn);
+      });
+    };
   }, [reducedMotion]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    const newErrors: Partial<FormState> = {};
+    if (!formState.name.trim()) newErrors.name = "Name is required";
+    if (!formState.email.trim()) newErrors.email = "Email is required";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email)) newErrors.email = "Invalid email format";
+    if (!formState.subject.trim()) newErrors.subject = "Subject is required";
+    if (!formState.message.trim()) newErrors.message = "Message is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (!validateForm()) {
+      setSubmitStatus("error");
+      setTimeout(() => setSubmitStatus("idle"), 3000);
+      return;
+    }
+
     setSubmitStatus("submitting");
+    setErrors({});
 
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1500));
@@ -327,7 +348,14 @@ export default function Contact() {
                       className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50"
                       placeholder="Evan Rafif Pradana"
                       aria-required="true"
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                     />
+                    {errors.name && (
+                      <p id="name-error" className="mt-1.5 text-sm text-red-500 dark:text-red-400" role="alert">
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium mb-2">
@@ -343,7 +371,14 @@ export default function Contact() {
                       className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50"
                       placeholder="evan@example.com"
                       aria-required="true"
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
                     />
+                    {errors.email && (
+                      <p id="email-error" className="mt-1.5 text-sm text-red-500 dark:text-red-400" role="alert">
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -358,6 +393,8 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors"
+                    aria-invalid={!!errors.subject}
+                    aria-describedby={errors.subject ? "subject-error" : undefined}
                   >
                     <option value="">Select a topic</option>
                     <option value="job">Job Opportunity</option>
@@ -366,6 +403,11 @@ export default function Contact() {
                     <option value="mentoring">Mentoring / Speaking</option>
                     <option value="other">Other</option>
                   </select>
+                  {errors.subject && (
+                    <p id="subject-error" className="mt-1.5 text-sm text-red-500 dark:text-red-400" role="alert">
+                      {errors.subject}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -382,7 +424,14 @@ export default function Contact() {
                     className="w-full px-4 py-3 rounded-xl bg-background border border-border focus:border-primary focus:ring-2 focus:ring-primary/20 focus:outline-none transition-colors placeholder:text-muted-foreground/50 resize-none"
                     placeholder="Tell me about your project, role, or just say hi..."
                     aria-required="true"
+                    aria-invalid={!!errors.message}
+                    aria-describedby={errors.message ? "message-error" : undefined}
                   />
+                  {errors.message && (
+                    <p id="message-error" className="mt-1.5 text-sm text-red-500 dark:text-red-400" role="alert">
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Submit button + status */}
@@ -427,6 +476,8 @@ export default function Contact() {
                     <motion.div
                       initial={{ opacity: 0, scale: 0.9 }}
                       animate={{ opacity: 1, scale: 1 }}
+                      role="alert"
+                      aria-live="polite"
                       className="flex items-center gap-2 text-sm text-green-600 dark:text-green-400"
                     >
                       <CheckCircle className="size-4" />

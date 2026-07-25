@@ -1,17 +1,14 @@
 "use client";
 
-import { motion, useInView, useScroll, useTransform, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, useScroll, useTransform, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Briefcase, GraduationCap, Code, CheckCircle } from "lucide-react";
 import {
   springEase,
   springConfig,
-  stagger,
   containerVariants,
-  itemVariants,
   headerVariants,
-  microVariants,
 } from "@/lib/animations";
 
 const experiences = [

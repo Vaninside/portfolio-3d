@@ -1,12 +1,10 @@
 "use client";
 
-import { motion, useInView, useReducedMotion, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { useRef } from "react";
 import { Code, Award, Users, Zap } from "lucide-react";
 
 import {
-  springEase,
-  springConfig,
   containerVariants,
   itemVariants,
   headerVariants,
@@ -23,10 +21,6 @@ export default function About() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const reducedMotion = useReducedMotion();
-
-  const sectionTransition = reducedMotion
-    ? { duration: 0.01 }
-    : { duration: 0.6, ease: springEase };
 
   return (
     <section

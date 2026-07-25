@@ -13,22 +13,25 @@ const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground
 
 import {
   springConfig,
-  stagger,
   containerVariants,
   itemVariants,
-  headerVariants,
-  microVariants,
   getTransition,
 } from "@/lib/animations";
 
 // Use shared animation configs - overrides for Hero-specific needs
-const heroContainerVariants: Variants = containerVariants.normal;
-const heroItemVariants: Variants = itemVariants.standard;
-const heroItemVariantsSlow: Variants = itemVariants.slow;
-const heroItemVariantsFast: Variants = itemVariants.fast;
 const heroBadgeVariants: Variants = {
   hidden: { opacity: 0, scale: 0.9, y: 10 },
   show: { opacity: 1, scale: 1, y: 0, transition: { ...springConfig.standard, delay: 0.05 } },
+};
+
+const heroItemVariantsSlow: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: springConfig.entrance },
+};
+
+const heroItemVariantsFast: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  show: { opacity: 1, y: 0, transition: springConfig.micro },
 };
 
 export default function Hero() {

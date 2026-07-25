@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView, useReducedMotion, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,13 +22,10 @@ import {
   containerVariants,
   itemVariants,
   headerVariants,
-  microVariants,
 } from "@/lib/animations";
 import {
   animateCardHover,
   animateBadgeHover,
-  animateIconPulse,
-  prefersReducedMotion,
 } from "@/lib/micro-interactions";
 
 const technicalSkills = [
@@ -155,16 +152,16 @@ export default function Skills() {
   useEffect(() => {
     if (reducedMotion) return;
 
+    const cleanupHandlers: Array<{ el: HTMLElement; type: string; fn: EventListener }> = [];
+
     skillCardRefs.current.forEach((el) => {
       if (!el) return;
       const handleEnter = () => animateCardHover(el, "hover");
       const handleLeave = () => animateCardHover(el, "leave");
       el.addEventListener("mouseenter", handleEnter);
       el.addEventListener("mouseleave", handleLeave);
-      return () => {
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
+      cleanupHandlers.push({ el, type: "mouseenter", fn: handleEnter });
+      cleanupHandlers.push({ el, type: "mouseleave", fn: handleLeave });
     });
 
     badgeRefs.current.forEach((el) => {
@@ -173,11 +170,16 @@ export default function Skills() {
       const handleLeave = () => animateBadgeHover(el, "leave");
       el.addEventListener("mouseenter", handleEnter);
       el.addEventListener("mouseleave", handleLeave);
-      return () => {
-        el.removeEventListener("mouseenter", handleEnter);
-        el.removeEventListener("mouseleave", handleLeave);
-      };
+      cleanupHandlers.push({ el, type: "mouseenter", fn: handleEnter });
+      cleanupHandlers.push({ el, type: "mouseleave", fn: handleLeave });
     });
+
+    // Cleanup function
+    return () => {
+      cleanupHandlers.forEach(({ el, type, fn }) => {
+        el.removeEventListener(type, fn);
+      });
+    };
   }, [reducedMotion]);
 
   return (

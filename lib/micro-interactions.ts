@@ -1,6 +1,6 @@
 "use client";
 
-import { animate, stagger, engine } from "animejs";
+import { animate, stagger, engine, type AnimationParams } from "animejs";
 
 /**
  * Anime.js micro-interactions for subtle, performant UI feedback
@@ -26,13 +26,13 @@ export const animateButtonHover = (
 ) => {
   if (prefersReducedMotion()) return;
 
-  const config = {
+  const config: Record<"hover" | "tap" | "leave", AnimationParams> = {
     hover: { scale: 1.03, boxShadow: "0 12px 24px -8px rgba(99, 102, 241, 0.4)", duration: 200, easing: "easeOutQuad" },
     tap: { scale: 0.98, duration: 100, easing: "easeOutQuad" },
     leave: { scale: 1, boxShadow: "none", duration: 200, easing: "easeOutQuad" },
-  }[type];
+  };
 
-  animate(element, config as any);
+  animate(element, config[type]);
 };
 
 /**
@@ -44,13 +44,13 @@ export const animateIconPulse = (
 ) => {
   if (prefersReducedMotion()) return;
 
-  const config = {
+  const config: Record<"hover" | "tap" | "leave", AnimationParams> = {
     hover: { scale: 1.15, rotate: 3, duration: 300, easing: "easeOutElastic(1, 0.6)" },
     tap: { scale: 0.9, duration: 80, easing: "easeOutQuad" },
     leave: { scale: 1, rotate: 0, duration: 250, easing: "easeOutQuad" },
-  }[type];
+  };
 
-  animate(element, config as any);
+  animate(element, config[type]);
 };
 
 /**
@@ -62,12 +62,12 @@ export const animateBadgeHover = (
 ) => {
   if (prefersReducedMotion()) return;
 
-  const config = {
+  const config: Record<"hover" | "leave", AnimationParams> = {
     hover: { scale: 1.06, duration: 200, easing: "easeOutQuad" },
     leave: { scale: 1, duration: 200, easing: "easeOutQuad" },
-  }[type];
+  };
 
-  animate(element, config as any);
+  animate(element, config[type]);
 };
 
 /**
@@ -79,12 +79,12 @@ export const animateCardHover = (
 ) => {
   if (prefersReducedMotion()) return;
 
-  const config = {
+  const config: Record<"hover" | "leave", AnimationParams> = {
     hover: { translateY: -4, boxShadow: "0 20px 40px -12px rgba(0, 0, 0, 0.15)", duration: 300, easing: "easeOutQuad" },
     leave: { translateY: 0, boxShadow: "none", duration: 300, easing: "easeOutQuad" },
-  }[type];
+  };
 
-  animate(element, config as any);
+  animate(element, config[type]);
 };
 
 /**
@@ -140,13 +140,13 @@ export const animateNavLink = (
   const underline = element.querySelector("[data-underline]") as HTMLElement | null;
   if (!underline) return;
 
-  const config = {
+  const config: Record<"hover" | "active" | "leave", AnimationParams> = {
     hover: { scaleX: 1, opacity: 1, duration: 250, easing: "easeOutQuad" },
     active: { scaleX: 1, opacity: 1, duration: 0, easing: "linear" },
     leave: { scaleX: 0, opacity: 0.5, duration: 250, easing: "easeOutQuad" },
-  }[type];
+  };
 
-  animate(underline, { transformOrigin: "left center", ...config });
+  animate(underline, { transformOrigin: "left center", ...config[type] });
 };
 
 /**
@@ -250,7 +250,7 @@ export const killAllAnimations = () => {
   let anim = engine._head;
   while (anim) {
     const next = anim._next;
-    (anim as any).pause?.();
+    (anim as { pause?: () => void }).pause?.();
     anim = next;
   }
 };

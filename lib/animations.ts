@@ -1,6 +1,6 @@
 "use client";
 
-import { Variants, Easing } from "framer-motion";
+import { Easing } from "framer-motion";
 
 /**
  * Shared animation constants & variants for consistent motion across the portfolio

@@ -1,17 +1,14 @@
 "use client";
 
-import { motion, useInView, useMotionValue, useTransform, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, useMotionValue, useTransform, type Variants } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe } from "lucide-react";
 import {
   springEase,
   springConfig,
-  containerVariants,
   headerVariants,
 } from "@/lib/animations";
-
-const springEaseLocal: Easing = springEase;
 
 const projects = [
   {
@@ -116,7 +113,7 @@ function ProjectCard({ project, index, isInView }: { project: typeof projects[0]
 
   const contentVariants: Variants = {
     hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: springEaseLocal } },
+    show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: springEase } },
   };
 
   return (

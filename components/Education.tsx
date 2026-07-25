@@ -1,15 +1,13 @@
 "use client";
 
-import { motion, useInView, useReducedMotion, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { GraduationCap, Award, BookOpen, Calendar, Code2, Medal } from "lucide-react";
 
 import {
   springEase,
   springConfig,
-  stagger,
   containerVariants,
-  itemVariants,
   headerVariants,
 } from "@/lib/animations";
 
@@ -39,8 +37,6 @@ const cardVariants: Variants = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: springConfig.entrance },
 };
-
-const headerVariantsLocal: Variants = headerVariants.standard;
 
 const honorVariants: Variants = {
   hidden: { opacity: 0, x: -10 },

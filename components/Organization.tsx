@@ -1,13 +1,12 @@
 "use client";
 
-import { motion, useInView, type Variants, type Easing } from "framer-motion";
+import { motion, useInView, type Variants } from "framer-motion";
 import { useRef } from "react";
 import { Handshake, Users, CheckCircle } from "lucide-react";
 import {
   springEase,
   springConfig,
   containerVariants,
-  itemVariants,
   headerVariants,
 } from "@/lib/animations";
 
@@ -50,11 +49,6 @@ const orgs = [
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
   show: { opacity: 1, y: 0, scale: 1, transition: springConfig.standard },
-};
-
-const dotVariants: Variants = {
-  hidden: { scale: 0 },
-  show: { scale: 1, transition: { duration: 0.4, ease: springEase } },
 };
 
 const pointVariants: Variants = {
