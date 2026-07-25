@@ -286,3 +286,323 @@ export const staggerEntrance = (
     easing,
   });
 };
+
+/**
+ * ========================================
+ * CURSOR FOLLOWER EFFECTS
+ * ========================================
+ * Using animejs v4 for reactive cursor tracking
+ */
+
+/**
+ * Cursor follower with trail - creates a smooth trailing cursor dot
+ * Usage: const cleanup = createCursorFollower({ color: '#6366f1', size: 12, trailLength: 5 })
+ */
+interface CursorFollowerOptions {
+  color?: string;
+  size?: number;
+  trailLength?: number;
+}
+
+export const createCursorFollower = (options: CursorFollowerOptions = {}) => {
+  if (prefersReducedMotion() || typeof window === "undefined") return () => {};
+
+  const {
+    color = "#6366f1",
+    size = 12,
+    trailLength = 5,
+  } = options;
+
+  // Create cursor element
+  const cursor = document.createElement("div");
+  cursor.style.cssText = `
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: ${size}px;
+    height: ${size}px;
+    border-radius: 50%;
+    background: ${color};
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: difference;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  `;
+  document.body.appendChild(cursor);
+
+  // Create trail elements
+  const trail: HTMLElement[] = [];
+  for (let i = 0; i < trailLength; i++) {
+    const dot = document.createElement("div");
+    const dotSize = size * (1 - i / trailLength) * 0.5;
+    dot.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: ${dotSize}px;
+      height: ${dotSize}px;
+      border-radius: 50%;
+      background: ${color};
+      pointer-events: none;
+      z-index: ${9998 - i};
+      transform: translate(-50%, -50%);
+      opacity: ${0.6 - i * 0.1};
+      mix-blend-mode: difference;
+    `;
+    document.body.appendChild(dot);
+    trail.push(dot);
+  }
+
+  // Current and target positions
+  let currentX = 0;
+  let currentY = 0;
+  let targetX = 0;
+  let targetY = 0;
+  let isVisible = false;
+
+  const handleMouseMove = (e: MouseEvent) => {
+    targetX = e.clientX;
+    targetY = e.clientY;
+    if (!isVisible) {
+      cursor.style.opacity = "1";
+      isVisible = true;
+    }
+  };
+
+  const handleMouseLeave = () => {
+    cursor.style.opacity = "0";
+  };
+
+  // Animation loop using simple spring interpolation
+  let rafId: number;
+  const animateCursor = () => {
+    // Spring interpolation (easeOutQuart feeling)
+    const spring = 0.15;
+    currentX += (targetX - currentX) * spring;
+    currentY += (targetY - currentY) * spring;
+
+    // Apply to main cursor
+    cursor.style.left = `${currentX}px`;
+    cursor.style.top = `${currentY}px`;
+
+    // Apply to trail with delay using setTimeout queue
+    trail.forEach((dot, i) => {
+      const delay = (i + 1) * 15;
+      setTimeout(() => {
+        dot.style.left = `${currentX}px`;
+        dot.style.top = `${currentY}px`;
+      }, delay);
+    });
+
+    rafId = requestAnimationFrame(animateCursor);
+  };
+
+  document.addEventListener("mousemove", handleMouseMove);
+  document.addEventListener("mouseleave", handleMouseLeave);
+  animateCursor();
+
+  // Cleanup function
+  return () => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseleave", handleMouseLeave);
+    cancelAnimationFrame(rafId);
+    cursor.remove();
+    trail.forEach((dot) => dot.remove());
+  };
+};
+
+/**
+ * Magnetic hover effect - elements attract cursor when nearby
+ * Usage: const cleanup = createMagneticHover('.magnetic', { strength: 0.3, distance: 100 })
+ */
+interface MagneticHoverOptions {
+  selector: string;
+  strength?: number;      // 0-1, how strong the pull is
+  distance?: number;      // px, max distance to start pulling
+  easing?: string;
+  duration?: number;
+}
+
+export const createMagneticHover = (options: MagneticHoverOptions) => {
+  if (prefersReducedMotion() || typeof window === "undefined") return () => {};
+
+  const {
+    selector,
+    strength = 0.3,
+    distance = 100,
+    easing = "easeOutElastic(1, 0.5)",
+    duration = 400,
+  } = options;
+
+  const elements = document.querySelectorAll<HTMLElement>(selector);
+  if (elements.length === 0) return () => {};
+
+  const handlers: Array<{ el: HTMLElement; type: string; fn: (e: Event) => void }> = [];
+
+  elements.forEach((el) => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = el.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const deltaX = e.clientX - centerX;
+      const deltaY = e.clientY - centerY;
+      const dist = Math.hypot(deltaX, deltaY);
+
+      if (dist < distance) {
+        const pullX = deltaX * strength * (1 - dist / distance);
+        const pullY = deltaY * strength * (1 - dist / distance);
+
+        animate(el, {
+          translateX: pullX,
+          translateY: pullY,
+          duration,
+          easing,
+        });
+      }
+    };
+
+    const handleMouseLeave = () => {
+      animate(el, {
+        translateX: 0,
+        translateY: 0,
+        duration: 500,
+        easing: "easeOutElastic(1, 0.5)",
+      });
+    };
+
+    el.addEventListener("mousemove", handleMouseMove as EventListener);
+    el.addEventListener("mouseleave", handleMouseLeave as EventListener);
+    handlers.push({ el, type: "mousemove", fn: handleMouseMove as (e: Event) => void });
+    handlers.push({ el, type: "mouseleave", fn: handleMouseLeave as (e: Event) => void });
+  });
+
+  return () => {
+    handlers.forEach(({ el, type, fn }) => el.removeEventListener(type, fn));
+  };
+};
+
+/**
+ * Cursor glow/ripple on click - creates expanding ripple at click position
+ * Usage: const cleanup = createClickRipple({ color: '#6366f1', maxSize: 300 })
+ */
+interface ClickRippleOptions {
+  color?: string;
+  maxSize?: number;
+  duration?: number;
+}
+
+export const createClickRipple = (options: ClickRippleOptions = {}) => {
+  if (prefersReducedMotion() || typeof window === "undefined") return () => {};
+
+  const { color = "#6366f1", maxSize = 300, duration = 600 } = options;
+
+  const handleClick = (e: MouseEvent) => {
+    const ripple = document.createElement("div");
+    ripple.style.cssText = `
+      position: fixed;
+      left: ${e.clientX}px;
+      top: ${e.clientY}px;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: ${color};
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    `;
+    document.body.appendChild(ripple);
+
+    animate(ripple, {
+      width: maxSize,
+      height: maxSize,
+      opacity: [0.3, 0],
+      duration,
+      easing: "easeOutQuad",
+      complete: () => ripple.remove(),
+    });
+  };
+
+  document.addEventListener("click", handleClick);
+  return () => document.removeEventListener("click", handleClick);
+};
+
+/**
+ * Text scramble effect - great for hero titles
+ * Usage: const cleanup = createTextScramble('.hero-title', { text: 'New Text', duration: 1000 })
+ */
+interface TextScrambleOptions {
+  selector: string;
+  text?: string;
+  chars?: string;
+  duration?: number;
+  delay?: number;
+  easing?: string;
+  loop?: boolean;
+  interval?: number;
+}
+
+export const createTextScramble = (options: TextScrambleOptions) => {
+  if (prefersReducedMotion() || typeof window === "undefined") return () => {};
+
+  const {
+    selector,
+    text,
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*",
+    duration = 1000,
+    loop = false,
+    interval = 3000,
+  } = options;
+
+  const elements = document.querySelectorAll<HTMLElement>(selector);
+  if (elements.length === 0) return () => {};
+
+  const originalTexts = Array.from(elements).map((el) => el.textContent || "");
+
+  const scramble = (el: HTMLElement, targetText: string) => {
+    const length = targetText.length;
+    let progress = 0;
+
+    const animateFrame = () => {
+      progress += 1 / (duration / 16);
+      if (progress > 1) progress = 1;
+
+      let result = "";
+      for (let i = 0; i < length; i++) {
+        if (i / length < progress) {
+          result += targetText[i];
+        } else {
+          result += chars[Math.floor(Math.random() * chars.length)];
+        }
+      }
+      el.textContent = result;
+
+      if (progress < 1) {
+        requestAnimationFrame(animateFrame);
+      }
+    };
+    animateFrame();
+  };
+
+  let intervalId: ReturnType<typeof setInterval>;
+  const run = () => {
+    elements.forEach((el, i) => {
+      const target = text || originalTexts[i];
+      setTimeout(() => scramble(el, target), i * 100);
+    });
+  };
+
+  run();
+  if (loop) {
+    intervalId = setInterval(run, interval);
+  }
+
+  return () => {
+    if (intervalId) clearInterval(intervalId);
+    elements.forEach((el, i) => {
+      el.textContent = originalTexts[i];
+    });
+  };
+};
