@@ -1,0 +1,432 @@
+{
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "projects": "Projects",
+    "skills": "Skills",
+    "education": "Education",
+    "organization": "Organization",
+    "contact": "Contact"
+  },
+  "hero": {
+    "badge": "Informatics Engineering Graduate",
+    "name1": "Evan Rafif",
+    "name2": "Pradana",
+    "subtitle": "Frontend developer & problem solver. Passionate about building clean, performant web experiences that make a difference.",
+    "ctaContact": "Get in Touch",
+    "ctaCv": "Download CV"
+  },
+  "about": {
+    "title": "About Me",
+    "description1": "I'm a Frontend Developer with an Informatics Engineering background, passionate about creating intuitive and performant web experiences. With expertise in React, Next.js, TypeScript, and modern CSS, I focus on writing clean, maintainable, and scalable code.",
+    "description2": "When not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge through technical writing. I believe in continuous learning and enjoy tackling complex challenges that push the boundaries of what's possible on the web.",
+    "highlights": {
+      "experience": "Years Experience",
+      "projects": "Projects Completed",
+      "technologies": "Technologies Mastered"
+    },
+    "skills": {
+      "frontend": {
+        "label": "Frontend Development",
+        "desc": "React, Next.js, TypeScript, Tailwind"
+      },
+      "academic": {
+        "label": "Academic Excellence",
+        "desc": "GPA 3.75/4.00, Thesis: IndoBERT Sentiment Analysis"
+      },
+      "leadership": {
+        "label": "Leadership & Operations",
+        "desc": "Lab Assistant, Event Organizer (1000+ attendees)"
+      },
+      "problemSolving": {
+        "label": "Problem Solving",
+        "desc": "Data analysis, optimization, clean architecture"
+      }
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "subtitle": "My professional journey so far",
+    "present": "Present",
+    "responsibilities": "Key Responsibilities",
+    "technologies": "Technologies",
+    "items": [
+      {
+        "role": "Frontend Web Developer Intern",
+        "company": "PT Cazh Teknologi Inovasi",
+        "location": "Purwokerto",
+        "period": "May 2025 - July 2025",
+        "points": [
+          "Spearheaded frontend web development for the \"Rukun\" application using Vue.js/Nuxt.js.",
+          "Designed and implemented interactive dashboards for complex data visualization, user management, and profile management.",
+          "Engineered secure authentication workflows, including login, registration, password reset, and route protection using middleware."
+        ],
+        "tech": ["Vue.js", "Nuxt.js", "TypeScript", "Tailwind CSS", "Pinia"]
+      },
+      {
+        "role": "Laboratory Assistant - Software Construction",
+        "company": "Programming Lab, Telkom University",
+        "location": "Purwokerto",
+        "period": "Feb 2025 - June 2025",
+        "points": [
+          "Guided students through software design, development, testing, and maintenance processes.",
+          "Conducted on-site problem-solving and ensured operational procedures complied with standards.",
+          "Mentored students on implementing proper coding practices, debugging, and code reviews."
+        ],
+        "tech": ["JavaScript", "React", "Node.js", "Git", "Testing"]
+      }
+    ]
+  },
+  "projects": {
+    "title": "Projects",
+    "subtitle": "Selected work I've built",
+    "viewCode": "View Code",
+    "viewDemo": "View Demo",
+    "featured": "Featured",
+    "period": "Period",
+    "technologies": "Technologies",
+    "points": "Key Highlights",
+    "items": [
+      {
+        "title": "RUKUN",
+        "description": "Internship Project at PT Cazh Teknologi Inovasi",
+        "period": "May 2025 - July 2025",
+        "tech": ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+        "points": [
+          "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
+          "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
+          "Configured state management and route middleware for secure multi-level authentication flows."
+        ],
+        "links": { "demo": "#", "github": "#" },
+        "color": "from-blue-500 via-cyan-500 to-blue-600",
+        "icon": "Globe"
+      },
+      {
+        "title": "PUSON",
+        "description": "Posyandu untuk Stunting Online — Academic Project",
+        "period": "March 2025 - Sep 2025",
+        "tech": ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
+        "points": [
+          "Developed and executed comprehensive test plans and test cases to identify software defects.",
+          "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
+          "Documented system anomalies and collaborated with the development team to resolve critical bugs."
+        ],
+        "links": { "demo": "#", "github": "#" },
+        "color": "from-emerald-500 via-teal-500 to-emerald-600",
+        "icon": "Shield"
+      },
+      {
+        "title": "Portfolio 3D",
+        "description": "Personal Portfolio with Three.js & Framer Motion",
+        "period": "July 2025 - Present",
+        "tech": ["Next.js 16", "React Three Fiber", "Framer Motion", "Tailwind CSS", "TypeScript"],
+        "points": [
+          "Built immersive 3D hero with WebGL floating geometries and glassmorphism materials.",
+          "Implemented scroll-triggered animations with spring physics and reduced-motion support.",
+          "Optimized for Core Web Vitals with dynamic imports and static generation."
+        ],
+        "links": { "demo": "#", "github": "#" },
+        "color": "from-violet-500 via-purple-500 to-pink-500",
+        "icon": "Layers"
+      },
+      {
+        "title": "TaskFlow",
+        "description": "Real-time Collaborative Task Manager",
+        "period": "Jan 2025 - Mar 2025",
+        "tech": ["Next.js", "Socket.io", "Prisma", "PostgreSQL", "Tailwind"],
+        "points": [
+          "Implemented real-time collaboration with WebSocket connections for live updates.",
+          "Designed responsive Kanban board with drag-and-drop using @dnd-kit.",
+          "Built authentication with NextAuth.js supporting OAuth and credentials."
+        ],
+        "links": { "demo": "#", "github": "#" },
+        "color": "from-amber-500 via-orange-500 to-red-500",
+        "icon": "Zap"
+      }
+    ]
+  },
+  "skills": {
+    "title": "Skills",
+    "subtitle": "Technologies I work with and competencies I bring to every team",
+    "categories": {
+      "frontend": "Frontend",
+      "backend": "Backend & API",
+      "tools": "DevOps & Tools",
+      "testing": "Testing & Quality"
+    },
+    "technicalSkills": [
+      {
+        "category": "Frontend",
+        "icon": "Code",
+        "color": "from-blue-500 via-cyan-500 to-blue-600",
+        "skills": [
+          "React 18 / Next.js 16 (App Router)",
+          "TypeScript (Strict Mode)",
+          "Tailwind CSS v4 / CSS Variables",
+          "Framer Motion / GSAP",
+          "React Three Fiber / Three.js",
+          "Shadcn/UI / Radix UI",
+          "Zustand / React Context",
+          "React Hook Form / Zod"
+        ]
+      },
+      {
+        "category": "Backend & API",
+        "icon": "Server",
+        "color": "from-emerald-500 via-teal-500 to-emerald-600",
+        "skills": [
+          "Node.js / Express / Fastify",
+          "RESTful API Design",
+          "GraphQL (Apollo / URQL)",
+          "Prisma ORM / Drizzle ORM",
+          "PostgreSQL / MySQL / MongoDB",
+          "Redis (Caching / Sessions)",
+          "WebSocket / Socket.io",
+          "NextAuth.js / Clerk"
+        ]
+      },
+      {
+        "category": "DevOps & Tools",
+        "icon": "Database",
+        "color": "from-violet-500 via-purple-500 to-pink-500",
+        "skills": [
+          "Git / GitHub / GitLab CI",
+          "Vercel / Netlify / AWS Amplify",
+          "Docker / Docker Compose",
+          "ESLint / Prettier / Husky",
+          "Vitest / Jest / Playwright",
+          "Turborepo / Nx",
+          "pnpm / npm Workspaces",
+          "VS Code / Cursor / Warp"
+        ]
+      },
+      {
+        "category": "Testing & Quality",
+        "icon": "Shield",
+        "color": "from-amber-500 via-orange-500 to-red-500",
+        "skills": [
+          "Unit Testing (Vitest / Jest)",
+          "Integration Testing (MSW)",
+          "E2E Testing (Playwright / Cypress)",
+          "Component Testing (Storybook + Vitest)",
+          "Visual Regression (Chromatic)",
+          "Accessibility Testing (axe-core)",
+          "Performance Profiling (Lighthouse CI)",
+          "Type Safety (tsc --strict)"
+        ]
+      }
+    ],
+    "softSkills": [
+      {
+        "label": "Problem Solving",
+        "icon": "Brain",
+        "desc": "Break down complex challenges into manageable, testable solutions"
+      },
+      {
+        "label": "Communication",
+        "icon": "MessageSquare",
+        "desc": "Clear technical communication across design, product, and engineering"
+      },
+      {
+        "label": "Time Management",
+        "icon": "Clock",
+        "desc": "Prioritize effectively, deliver iteratively, meet deadlines reliably"
+      },
+      {
+        "label": "Leadership",
+        "icon": "Target",
+        "desc": "Mentored junior developers, led lab sessions (50+ students), organized 1000+ attendee events"
+      },
+      {
+        "label": "Adaptability",
+        "icon": "Lightbulb",
+        "desc": "Quick learner — picked up Vue/Nuxt in 2 weeks for RUKUN internship project"
+      },
+      {
+        "label": "Collaboration",
+        "icon": "Users",
+        "desc": "Cross-functional teamwork: designers, PMs, QA, backend, stakeholders"
+      }
+    ],
+    "languages": [
+      { "name": "Indonesian", "level": "Native", "icon": "Globe" },
+      { "name": "English", "level": "Professional (TOEFL 550+)", "icon": "Globe" },
+      { "name": "Javanese", "level": "Conversational", "icon": "Globe" }
+    ]
+  },
+  "education": {
+    "title": "Education",
+    "subtitle": "My academic background",
+    "degree": "Bachelor of Informatics Engineering",
+    "university": "Universitas Pembangunan Nasional Veteran Jawa Timur",
+    "gpa": "GPA: 3.75/4.00",
+    "thesis": "Thesis: IndoBERT-based Sentiment Analysis for Indonesian Product Reviews",
+    "graduation": "2024",
+    "items": [
+      {
+        "degree": "Bachelor's Degree, Informatics Engineering",
+        "school": "Telkom University",
+        "location": "Campus Purwokerto",
+        "period": "Sept 2022 — Feb 2026",
+        "gpa": "3.75 / 4.00",
+        "thesis": "Fine-tuning IndoBERT Model for Sentiment Analysis and Comparative Study of Optimizers",
+        "honors": ["Top 2 selling on Telkom University Campus Purwokerto Market Day 2025"],
+        "subjects": ["Machine Learning", "Deep Learning", "Natural Language Processing", "Data Mining", "Software Engineering", "Algorithm & Data Structures"]
+      }
+    ],
+    "certifications": [
+      { "name": "React Developer Certification", "issuer": "Meta", "year": "2024", "icon": "Code2" },
+      { "name": "TypeScript Professional", "issuer": "Microsoft", "year": "2024", "icon": "Code2" },
+      { "name": "AWS Cloud Practitioner", "issuer": "Amazon Web Services", "year": "2023", "icon": "Award" },
+      { "name": "Google UX Design", "issuer": "Google", "year": "2023", "icon": "Medal" },
+      { "name": "Next.js App Router Mastery", "issuer": "Vercel", "year": "2024", "icon": "Code2" }
+    ],
+    "labels": {
+      "period": "Period",
+      "location": "Location",
+      "thesis": "Thesis",
+      "honors": "Honors & Achievements",
+      "subjects": "Key Coursework",
+      "certifications": "Certifications",
+      "continuousLearning": "Continuous learning & professional development"
+    }
+  },
+  "organization": {
+    "title": "Organization",
+    "subtitle": "Leadership & community involvement",
+    "role": "Role",
+    "period": "Period",
+    "items": [
+      {
+        "title": "Staff Logistic And Operation",
+        "event": "Todays 2025",
+        "org": "BEM KEMA Telkom University Purwokerto",
+        "period": "June 2025 - Sep 2025",
+        "points": [
+          "Orchestrated logistics and operational activities for seamless execution of daily programs and large-scale events.",
+          "Coordinated with internal teams and external vendors to manage schedules, resources, and inventory.",
+          "Enforced industry standards by promoting clean code principles, version control, and systematic documentation."
+        ],
+        "icon": "Users",
+        "color": "text-primary",
+        "bgColor": "bg-primary/10",
+        "borderColor": "border-primary/20",
+        "highlight": "1000+ attendees"
+      },
+      {
+        "title": "Staff Sponsorship",
+        "event": "TUPE E-Sport Event",
+        "org": "UKM Esport Telkom University Purwokerto",
+        "period": "Sep 2025 - Nov 2025",
+        "points": [
+          "Spearheaded acquisition of corporate sponsorships by pitching structured funding packages (Silver, Gold, Platinum, Diamond).",
+          "Negotiated and formalized MoU agreements with external partners ensuring mutually beneficial terms.",
+          "Coordinated cross-functionally to execute sponsorship deliverables including logo placements and live stream adlibs."
+        ],
+        "icon": "Handshake",
+        "color": "text-primary",
+        "bgColor": "bg-primary/10",
+        "borderColor": "border-primary/20",
+        "highlight": "4 tier packages"
+      }
+    ],
+    "labels": {
+      "experience": "Organization Experience",
+      "leading": "Leading initiatives, securing partnerships, and delivering impact at scale"
+    }
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Let's work together",
+    "description": "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!",
+    "email": "Email",
+    "linkedin": "LinkedIn",
+    "github": "GitHub",
+    "location": "Location",
+    "locationValue": "Surabaya, Indonesia",
+    "phone": "Phone",
+    "availability": "Availability",
+    "connectWithMe": "Connect With Me",
+    "sendMessage": "Send a Message",
+    "hireMe": "Hire Me",
+    "downloadCv": "Download CV",
+    "form": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully!",
+      "error": "Failed to send message. Please try again.",
+      "placeholder": {
+        "name": "Evan Rafif Pradana",
+        "email": "evan@example.com",
+        "message": "Tell me about your project, role, or just say hi..."
+      },
+      "subjectOptions": {
+        "select": "Select a topic",
+        "job": "Job Opportunity",
+        "freelance": "Freelance Project",
+        "collaboration": "Collaboration",
+        "mentoring": "Mentoring / Speaking",
+        "other": "Other"
+      },
+      "validation": {
+        "nameRequired": "Name is required",
+        "emailRequired": "Email is required",
+        "emailInvalid": "Invalid email format",
+        "subjectRequired": "Subject is required",
+        "messageRequired": "Message is required"
+      }
+    },
+    "contactInfo": [
+      {
+        "label": "Email",
+        "value": "evanrafifpradana@gmail.com",
+        "icon": "Mail",
+        "href": "mailto:evanrafifpradana@gmail.com",
+        "description": "Primary contact for opportunities"
+      },
+      {
+        "label": "Phone",
+        "value": "+62 8xx-xxxx-xxxx",
+        "icon": "Phone",
+        "href": "tel:+628xxxxxxxxxx",
+        "description": "WhatsApp / Call available"
+      },
+      {
+        "label": "Location",
+        "value": "Yogyakarta, Indonesia",
+        "icon": "MapPin",
+        "href": "https://maps.google.com/?q=Yogyakarta,Indonesia",
+        "description": "Open to relocation & remote"
+      },
+      {
+        "label": "Availability",
+        "value": "Full-time / Freelance",
+        "icon": "Clock",
+        "href": "#",
+        "description": "Immediate start available"
+      }
+    ],
+    "socialLinks": [
+      { "label": "GitHub", "icon": "GitBranch", "href": "https://github.com/vaninside", "color": "hover:text-gray-400 dark:hover:text-gray-500" },
+      { "label": "LinkedIn", "icon": "ExternalLink", "href": "https://linkedin.com/in/evanrafifpradana", "color": "hover:text-primary/80 dark:hover:text-primary" },
+      { "label": "Twitter / X", "icon": "ExternalLink", "href": "https://x.com/vaninside", "color": "hover:text-sky-500" }
+    ],
+    "footerNote": "Prefer a direct email?",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "bySubmitting": "By submitting, you agree to"
+  },
+  "footer": {
+    "copyright": "© 2025 Evan Rafif Pradana. All rights reserved.",
+    "builtWith": "Built with Next.js, React, and TypeScript"
+  },
+  "language": {
+    "en": "English",
+    "id": "Indonesian",
+    "switchTo": "Switch to {{lang}}"
+  }
+}
