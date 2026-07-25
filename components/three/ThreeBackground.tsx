@@ -5,7 +5,6 @@ import { Float, MeshTransmissionMaterial } from "@react-three/drei";
 import { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Mesh, TorusGeometry, IcosahedronGeometry, OctahedronGeometry, DodecahedronGeometry, SphereGeometry } from "three";
-import { useTheme } from "next-themes";
 
 extend({
   torusGeometry: TorusGeometry,
@@ -75,44 +74,26 @@ function FloatingShape({ type, color, position, scale, speed, transparent = true
     </Float>
   );
 }
-function getThemeColors(theme: string) {
-  if (theme === "dark") {
-    return {
-      ambient: 0.35,
-      directional: 0.7,
-      point1: { color: "#818cf8", intensity: 0.25 }, // lighter primary
-      point2: { color: "#f472b6", intensity: 0.2 }, // lighter pink
-      shapes: [
-        { type: "torus" as const, color: "#818cf8", position: [-2.8, 1.8, -1] as const, scale: 1.15, speed: 0.35 },
-        { type: "icosahedron" as const, color: "#f472b6", position: [2.8, -1, -0.3] as const, scale: 0.95, speed: 0.55 },
-        { type: "octahedron" as const, color: "#67e8f9", position: [0.5, -2.8, -2.2] as const, scale: 0.85, speed: 0.45 },
-        { type: "dodecahedron" as const, color: "#c084fc", position: [-1.8, 0.5, 2.2] as const, scale: 0.75, speed: 0.28 },
-        { type: "sphere" as const, color: "#fdba74", position: [2.2, 2.2, 1.2] as const, scale: 0.65, speed: 0.65 },
-      ],
-      gradient1: "rgba(129, 140, 248, 0.05)",
-      gradient2: "rgba(244, 114, 182, 0.04)",
-    };
-  }
+function getThemeColors() {
   return {
-    ambient: 0.45,
-    directional: 1,
-    point1: { color: "#6366f1", intensity: 0.35 },
-    point2: { color: "#ec4899", intensity: 0.25 },
+    ambient: 0.35,
+    directional: 0.7,
+    point1: { color: "#818cf8", intensity: 0.25 },
+    point2: { color: "#f472b6", intensity: 0.2 },
     shapes: [
-      { type: "torus" as const, color: "#6366f1", position: [-2.8, 1.8, -1] as const, scale: 1.15, speed: 0.35 },
-      { type: "icosahedron" as const, color: "#ec4899", position: [2.8, -1, -0.3] as const, scale: 0.95, speed: 0.55 },
-      { type: "octahedron" as const, color: "#22d3ee", position: [0.5, -2.8, -2.2] as const, scale: 0.85, speed: 0.45 },
-      { type: "dodecahedron" as const, color: "#a855f7", position: [-1.8, 0.5, 2.2] as const, scale: 0.75, speed: 0.28 },
-      { type: "sphere" as const, color: "#f97316", position: [2.2, 2.2, 1.2] as const, scale: 0.65, speed: 0.65 },
+      { type: "torus" as const, color: "#818cf8", position: [-2.8, 1.8, -1] as const, scale: 1.15, speed: 0.35 },
+      { type: "icosahedron" as const, color: "#f472b6", position: [2.8, -1, -0.3] as const, scale: 0.95, speed: 0.55 },
+      { type: "octahedron" as const, color: "#67e8f9", position: [0.5, -2.8, -2.2] as const, scale: 0.85, speed: 0.45 },
+      { type: "dodecahedron" as const, color: "#c084fc", position: [-1.8, 0.5, 2.2] as const, scale: 0.75, speed: 0.28 },
+      { type: "sphere" as const, color: "#fdba74", position: [2.2, 2.2, 1.2] as const, scale: 0.65, speed: 0.65 },
     ],
-    gradient1: "rgba(99, 102, 241, 0.04)",
-    gradient2: "rgba(236, 72, 153, 0.03)",
+    gradient1: "rgba(129, 140, 248, 0.05)",
+    gradient2: "rgba(244, 114, 182, 0.04)",
   };
 }
 
 export default function ThreeBackground() {
-  const { theme } = useTheme();
-  const colors = getThemeColors(theme ?? "dark");
+  const colors = getThemeColors();
 
   return (
     <div className="fixed inset-0 -z-10">
