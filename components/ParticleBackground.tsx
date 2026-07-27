@@ -24,6 +24,9 @@ export default function ParticleBackground() {
     let height = 0;
     let rafId: number | null = null;
     const mouse: { x: number | null; y: number | null } = { x: null, y: null };
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
 
     class Particle {
       x: number;
@@ -125,6 +128,12 @@ export default function ParticleBackground() {
       }
     }
 
+    function renderStatic() {
+      ctx.clearRect(0, 0, width, height);
+      for (const p of particles) p.draw();
+      connect();
+    }
+
     function animate() {
       ctx.clearRect(0, 0, width, height);
       for (const p of particles) p.update();
@@ -133,6 +142,10 @@ export default function ParticleBackground() {
     }
 
     function start() {
+      if (reducedMotion) {
+        renderStatic();
+        return;
+      }
       if (rafId === null) rafId = requestAnimationFrame(animate);
     }
 
@@ -149,6 +162,7 @@ export default function ParticleBackground() {
       canvas.width = width;
       canvas.height = height;
       init();
+      if (reducedMotion) renderStatic();
     }
 
     function handleMouseMove(e: MouseEvent) {
@@ -160,14 +174,25 @@ export default function ParticleBackground() {
       mouse.y = null;
     }
 
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) start();
+          else stop();
+        }
+      },
+      { threshold: 0 }
+    );
+
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseout", handleMouseOut);
     resize();
-    start();
+    observer.observe(canvas);
 
     return () => {
       stop();
+      observer.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseout", handleMouseOut);
