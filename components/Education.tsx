@@ -27,7 +27,7 @@ const EDUCATION = [
     period: "Sept 2022 — Feb 2026",
     gpa: "3.75 / 4.00",
     thesis: "Fine-tuning IndoBERT Model for Sentiment Analysis and Comparative Study of Optimizers",
-    honors: ["Top 2 selling on Telkom University Campus Purwokerto Market Day 2025"],
+    honors: [],
     subjects: [
       "Machine Learning",
       "Deep Learning",
@@ -40,11 +40,15 @@ const EDUCATION = [
 ] as const;
 
 const CERTIFICATIONS = [
-  { name: "React Developer Certification", issuer: "Meta", year: "2024", icon: "Code2" as const },
-  { name: "TypeScript Professional", issuer: "Microsoft", year: "2024", icon: "Code2" as const },
-  { name: "AWS Cloud Practitioner", issuer: "Amazon Web Services", year: "2023", icon: "Award" as const },
-  { name: "Google UX Design", issuer: "Google", year: "2023", icon: "Medal" as const },
-  { name: "Next.js App Router Mastery", issuer: "Vercel", year: "2024", icon: "Code2" as const },
+  { name: "EPrT (English Proficiency Test)", issuer: "Telkom University", year: "2025", icon: "Medal" as const },
+  { name: "Belajar Back-End Pemula dengan JavaScript", issuer: "Dicoding", year: "2025", icon: "Code2" as const },
+  { name: "Belajar Dasar Pemrograman JavaScript", issuer: "Dicoding", year: "2025", icon: "Code2" as const },
+  { name: "Belajar Dasar Cloud dan Gen AI di AWS", issuer: "Dicoding", year: "2025", icon: "Award" as const },
+  { name: "Memulai Pemrograman dengan Python", issuer: "Dicoding", year: "2025", icon: "Code2" as const },
+  { name: "Belajar Dasar Data Science", issuer: "Dicoding", year: "2025", icon: "BookOpen" as const },
+  { name: "Belajar Dasar AI", issuer: "Dicoding", year: "2025", icon: "Award" as const },
+  { name: "Belajar Dasar Visualisasi Data", issuer: "Dicoding", year: "2025", icon: "BookOpen" as const },
+  { name: "Belajar Dasar Structured Query Language (SQL)", issuer: "Dicoding", year: "2025", icon: "Code2" as const },
 ] as const;
 
 const EDU_LABELS = {
@@ -171,26 +175,28 @@ export default function Education() {
                 {/* Honors & Subjects grid */}
                 <div className="grid md:grid-cols-2 gap-6">
                   {/* Honors */}
-                  <div>
-                    <h4 className="font-semibold text-foreground flex items-center gap-2 mb-4">
-                      <Award className="size-5 text-primary" aria-hidden="true" />
-                      {EDU_LABELS.honors}
-                    </h4>
-                    <ul className="space-y-2" role="list">
-                      {edu.honors.map((honor) => (
-                        <motion.li
-                          key={honor}
-                          variants={honorVariants}
-                          className="flex items-center gap-3 text-sm text-muted-foreground"
-                        >
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
-                            <Medal className="size-3" aria-hidden="true" />
-                          </span>
-                          {honor}
-                        </motion.li>
-                      ))}
-                    </ul>
-                  </div>
+                  {edu.honors.length > 0 && (
+                    <div>
+                      <h4 className="font-semibold text-foreground flex items-center gap-2 mb-4">
+                        <Award className="size-5 text-primary" aria-hidden="true" />
+                        {EDU_LABELS.honors}
+                      </h4>
+                      <ul className="space-y-2" role="list">
+                        {edu.honors.map((honor) => (
+                          <motion.li
+                            key={honor}
+                            variants={honorVariants}
+                            className="flex items-center gap-3 text-sm text-muted-foreground"
+                          >
+                            <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+                              <Medal className="size-3" aria-hidden="true" />
+                            </span>
+                            {honor}
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
                   {/* Key Subjects */}
                   <div>
