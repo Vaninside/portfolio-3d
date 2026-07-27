@@ -174,29 +174,23 @@ export default function ParticleBackground() {
       mouse.y = null;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) start();
-          else stop();
-        }
-      },
-      { threshold: 0 }
-    );
-
     window.addEventListener("resize", resize);
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseOut);
+    // `mouseleave` on document fires only when the pointer truly leaves the
+    // window, unlike `mouseout` which bubbles on inner-element boundaries.
+    document.addEventListener("mouseleave", handleMouseOut);
     resize();
-    const observeTarget: Element = canvas.closest("section") ?? canvas;
-    observer.observe(observeTarget);
+    // The canvas is fixed and full-page, so it stays visible through the whole
+    // scroll. Keep the loop running continuously so particles never freeze
+    // behind the lower sections; the browser throttles rAF while the tab is
+    // hidden, so there is no cost when the page is not on screen.
+    start();
 
     return () => {
       stop();
-      observer.disconnect();
       window.removeEventListener("resize", resize);
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseOut);
+      document.removeEventListener("mouseleave", handleMouseOut);
     };
   }, []);
 
