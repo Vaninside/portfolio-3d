@@ -381,7 +381,7 @@ export default function Contact() {
             <div className="mt-8 pt-6 border-t border-border space-y-3">
               <a
                 data-hire-btn
-                href="mailto:evanrafifpradana@gmail.com?subject=Job Opportunity&body=Hi Evan,%0D%0A%0D%0AI came across your portfolio and..."
+                href="mailto:evanrafif45@gmail.com?subject=Job Opportunity&body=Hi Evan,%0D%0A%0D%0AI came across your portfolio and..."
                 className="flex w-full items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
               >
                 <Mail className="size-4" aria-hidden="true" />
@@ -591,8 +591,8 @@ export default function Contact() {
         >
           <p className="text-sm text-muted-foreground">
             {footer.footerNote}{' '}
-            <a href="mailto:evanrafifpradana@gmail.com" className="font-medium text-primary hover:underline">
-              evanrafifpradana@gmail.com
+            <a href="mailto:evanrafif45@gmail.com" className="font-medium text-primary hover:underline">
+              evanrafif45@gmail.com
             </a>
           </p>
         </motion.div>
