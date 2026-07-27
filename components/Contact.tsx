@@ -27,8 +27,6 @@ import {
   animateSocialHover,
   prefersReducedMotion,
 } from "@/lib/micro-interactions";
-import { useTranslation } from "@/lib/i18n/useTranslation";
-
 const cardVariants: Variants = {
   hidden: { opacity: 0, y: 30, scale: 0.98 },
   show: { opacity: 1, y: 0, scale: 1, transition: springConfig },
@@ -82,8 +80,92 @@ const iconMap = {
   Send,
 };
 
+const contactInfo = [
+  {
+    label: "Email",
+    value: "evanrafifpradana@gmail.com",
+    icon: "Mail",
+    href: "mailto:evanrafifpradana@gmail.com",
+    description: "Primary contact for opportunities",
+  },
+  {
+    label: "Phone",
+    value: "+62 8xx-xxxx-xxxx",
+    icon: "Phone",
+    href: "tel:+628xxxxxxxxxx",
+    description: "WhatsApp / Call available",
+  },
+  {
+    label: "Location",
+    value: "Yogyakarta, Indonesia",
+    icon: "MapPin",
+    href: "https://maps.google.com/?q=Yogyakarta,Indonesia",
+    description: "Open to relocation & remote",
+  },
+  {
+    label: "Availability",
+    value: "Full-time / Freelance",
+    icon: "Clock",
+    href: "#",
+    description: "Immediate start available",
+  },
+] as const;
+
+const socialLinks = [
+  { label: "GitHub", icon: "GitBranch", href: "https://github.com/vaninside", color: "hover:text-gray-400 dark:hover:text-gray-500" },
+  { label: "LinkedIn", icon: "ExternalLink", href: "https://linkedin.com/in/evanrafifpradana", color: "hover:text-primary/80 dark:hover:text-primary" },
+  { label: "Twitter / X", icon: "ExternalLink", href: "https://x.com/vaninside", color: "hover:text-sky-500" },
+] as const;
+
+const formLabels = {
+  name: "Name",
+  email: "Email",
+  subject: "Subject",
+  message: "Message",
+  send: "Send Message",
+  sending: "Sending...",
+  success: "Message sent successfully!",
+  error: "Failed to send message. Please try again.",
+  placeholder: {
+    name: "Evan Rafif Pradana",
+    email: "evan@example.com",
+    message: "Tell me about your project, role, or just say hi...",
+  },
+  subjectOptions: {
+    select: "Select a topic",
+    job: "Job Opportunity",
+    freelance: "Freelance Project",
+    collaboration: "Collaboration",
+    mentoring: "Mentoring / Speaking",
+    other: "Other",
+  },
+  validation: {
+    nameRequired: "Name is required",
+    emailRequired: "Email is required",
+    emailInvalid: "Invalid email format",
+    subjectRequired: "Subject is required",
+    messageRequired: "Message is required",
+  },
+} as const;
+
+const footer = {
+  footerNote: "Prefer a direct email?",
+  privacyPolicy: "Privacy Policy",
+  termsOfService: "Terms of Service",
+  bySubmitting: "By submitting, you agree to",
+} as const;
+
+const contactSection = {
+  title: "Contact",
+  subtitle: "Let's work together",
+  description: "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!",
+  connectWithMe: "Connect With Me",
+  sendMessage: "Send a Message",
+  hireMe: "Hire Me",
+  downloadCv: "Download CV",
+} as const;
+
 export default function Contact() {
-  const { t } = useTranslation();
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [formState, setFormState] = useState<FormState>({
@@ -151,13 +233,7 @@ export default function Contact() {
 
   const validateForm = (): boolean => {
     const newErrors: Partial<FormState> = {};
-    const validation = t("contact.form.validation", { returnObjects: true }) as {
-      nameRequired: string;
-      emailRequired: string;
-      emailInvalid: string;
-      subjectRequired: string;
-      messageRequired: string;
-    };
+    const validation = formLabels.validation;
 
     if (!formState.name.trim()) newErrors.name = validation.nameRequired;
     if (!formState.email.trim()) newErrors.email = validation.emailRequired;
@@ -193,37 +269,6 @@ export default function Contact() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormState((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const contactInfo = t("contact.contactInfo", { returnObjects: true }) as ContactInfoItem[];
-  const socialLinks = t("contact.socialLinks", { returnObjects: true }) as SocialLinkItem[];
-  const formLabels = t("contact.form", { returnObjects: true }) as {
-    name: string;
-    email: string;
-    subject: string;
-    message: string;
-    send: string;
-    sending: string;
-    success: string;
-    error: string;
-    placeholder: { name: string; email: string; message: string };
-    subjectOptions: { select: string; job: string; freelance: string; collaboration: string; mentoring: string; other: string };
-    validation: { nameRequired: string; emailRequired: string; emailInvalid: string; subjectRequired: string; messageRequired: string };
-  };
-  const footer = t("contact", { returnObjects: true }) as {
-    footerNote: string;
-    privacyPolicy: string;
-    termsOfService: string;
-    bySubmitting: string;
-  };
-  const contactSection = t("contact", { returnObjects: true }) as {
-    title: string;
-    subtitle: string;
-    description: string;
-    connectWithMe: string;
-    sendMessage: string;
-    hireMe: string;
-    downloadCv: string;
   };
 
   return (
