@@ -83,23 +83,23 @@ const iconMap = {
 const contactInfo = [
   {
     label: "Email",
-    value: "evanrafifpradana@gmail.com",
+    value: "evanrafif45@gmail.com",
     icon: "Mail",
-    href: "mailto:evanrafifpradana@gmail.com",
+    href: "mailto:evanrafif45@gmail.com",
     description: "Primary contact for opportunities",
   },
   {
     label: "Phone",
-    value: "+62 8xx-xxxx-xxxx",
+    value: "+62 823-2543-9854",
     icon: "Phone",
-    href: "tel:+628xxxxxxxxxx",
+    href: "tel:+6282325439854",
     description: "WhatsApp / Call available",
   },
   {
     label: "Location",
-    value: "Yogyakarta, Indonesia",
+    value: "Purbalingga, Central Java",
     icon: "MapPin",
-    href: "https://maps.google.com/?q=Yogyakarta,Indonesia",
+    href: "https://maps.google.com/?q=Purbalingga,Indonesia",
     description: "Open to relocation & remote",
   },
   {
@@ -114,7 +114,6 @@ const contactInfo = [
 const socialLinks = [
   { label: "GitHub", icon: "GitBranch", href: "https://github.com/vaninside", color: "hover:text-gray-400 dark:hover:text-gray-500" },
   { label: "LinkedIn", icon: "ExternalLink", href: "https://linkedin.com/in/evanrafifpradana", color: "hover:text-primary/80 dark:hover:text-primary" },
-  { label: "Twitter / X", icon: "ExternalLink", href: "https://x.com/vaninside", color: "hover:text-sky-500" },
 ] as const;
 
 const formLabels = {
