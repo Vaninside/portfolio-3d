@@ -1,17 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
 import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
 import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
 import { MatrixText } from "@/components/ui/MatrixText";
-
-const ParticleBackground = dynamic(() => import("@/components/ParticleBackground"), {
-  ssr: false,
-  loading: () => null,
-});
 
 import {
   springConfig,
@@ -71,9 +65,6 @@ export default function Hero() {
       className="relative min-h-dvh flex items-center justify-center px-6 overflow-hidden isolation"
       role="banner"
     >
-      {/* Particle network background */}
-      <ParticleBackground />
-
       {/* Radial gradient glow behind content (light/dark adaptive) */}
       <div
         className="absolute inset-0 -z-10 pointer-events-none"

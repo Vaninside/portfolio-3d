@@ -91,7 +91,7 @@ export default function Education() {
     <section
       ref={ref}
       id="education"
-      className="py-24 px-6 md:py-32 bg-muted/30"
+      className="py-24 px-6 md:py-32"
       aria-labelledby="education-heading"
     >
       <div className="mx-auto max-w-5xl">
