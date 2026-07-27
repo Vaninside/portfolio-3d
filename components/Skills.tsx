@@ -14,6 +14,8 @@ import {
   Brain,
   Lightbulb,
   Shield,
+  Braces,
+  Wrench,
   Globe as GlobeIcon,
 } from "lucide-react";
 import {
@@ -40,6 +42,8 @@ const iconMap = {
   Target,
   Lightbulb,
   Users,
+  Braces,
+  Wrench,
 } as const;
 
 const technicalSkills = [
@@ -48,40 +52,74 @@ const technicalSkills = [
     icon: "Code" as const,
     color: "from-blue-500 via-cyan-500 to-blue-600",
     skills: [
-      "Vue.js / Nuxt.js",
-      "Next.js (App Router)",
       "React",
-      "TypeScript",
+      "Next.js",
+      "Vue.js",
+      "Nuxt.js",
       "Tailwind CSS",
       "Framer Motion",
+      "HTML5",
+      "CSS3",
+    ],
+  },
+  {
+    category: "Backend",
+    icon: "Server" as const,
+    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    skills: [
+      "Node.js",
+      "REST API",
+      "Authentication & Middleware",
+      "PHP",
+      "SQL / MySQL",
+      "Database Design",
+      "OOP",
+      "API Integration",
     ],
   },
   {
     category: "Data & AI",
     icon: "Brain" as const,
-    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    color: "from-violet-500 via-purple-500 to-pink-500",
     skills: [
-      "Python",
-      "Machine Learning / NLP",
-      "Data Analysis & Data Science",
+      "Machine Learning",
+      "Deep Learning",
+      "NLP / IndoBERT",
+      "Data Analysis",
+      "Data Science",
       "Data Visualization",
       "Generative AI",
-      "AWS (Cloud & Gen AI)",
+      "Model Fine-tuning",
     ],
   },
   {
-    category: "Languages & Tools",
-    icon: "Server" as const,
-    color: "from-violet-500 via-purple-500 to-pink-500",
+    category: "Programming Languages",
+    icon: "Braces" as const,
+    color: "from-amber-500 via-orange-500 to-red-500",
     skills: [
       "JavaScript",
-      "Node.js",
+      "TypeScript",
+      "Python",
       "PHP",
       "SQL",
-      "Git / Version Control",
-      "REST API",
-      "Clean Code Principles",
-      "QA / Testing",
+      "Java",
+      "C / C++",
+      "Dart",
+    ],
+  },
+  {
+    category: "Tools",
+    icon: "Wrench" as const,
+    color: "from-rose-500 via-pink-500 to-fuchsia-500",
+    skills: [
+      "Git / GitHub",
+      "VS Code",
+      "Postman",
+      "Figma",
+      "Jira / Trello",
+      "Vercel / Netlify",
+      "AWS",
+      "npm",
     ],
   },
 ] as const;
@@ -211,9 +249,9 @@ export default function Skills() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
           role="list"
-          aria-label="Frontend"
+          aria-label="Technical skills"
         >
           {technicalSkills.map((category, i) => {
             const CategoryIcon = iconMap[category.icon];
