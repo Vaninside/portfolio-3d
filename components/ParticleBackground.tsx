@@ -188,7 +188,8 @@ export default function ParticleBackground() {
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("mouseout", handleMouseOut);
     resize();
-    observer.observe(canvas);
+    const observeTarget: Element = canvas.closest("section") ?? canvas;
+    observer.observe(observeTarget);
 
     return () => {
       stop();
