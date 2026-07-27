@@ -9,7 +9,6 @@ import {
   containerVariants,
   headerVariants,
 } from "@/lib/animations";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const iconMap = {
   Handshake,
@@ -41,31 +40,51 @@ const periodVariants: Variants = {
   show: { opacity: 1, x: 0, transition: { duration: 0.4, ease: springEase } },
 };
 
+const orgs = [
+  {
+    title: "Staff Logistic And Operation",
+    event: "Todays 2025",
+    org: "BEM KEMA Telkom University Purwokerto",
+    period: "June 2025 - Sep 2025",
+    points: [
+      "Orchestrated logistics and operational activities for seamless execution of daily programs and large-scale events.",
+      "Coordinated with internal teams and external vendors to manage schedules, resources, and inventory.",
+      "Enforced industry standards by promoting clean code principles, version control, and systematic documentation.",
+    ],
+    icon: "Users" as const,
+    color: "text-primary",
+    bgColor: "bg-primary/10",
+    borderColor: "border-primary/20",
+    highlight: "1000+ attendees",
+  },
+  {
+    title: "Staff Sponsorship",
+    event: "TUPE E-Sport Event",
+    org: "UKM Esport Telkom University Purwokerto",
+    period: "Sep 2025 - Nov 2025",
+    points: [
+      "Spearheaded acquisition of corporate sponsorships by pitching structured funding packages (Silver, Gold, Platinum, Diamond).",
+      "Negotiated and formalized MoU agreements with external partners ensuring mutually beneficial terms.",
+      "Coordinated cross-functionally to execute sponsorship deliverables including logo placements and live stream adlibs.",
+    ],
+    icon: "Handshake" as const,
+    color: "text-primary",
+    bgColor: "bg-primary/10",
+    borderColor: "border-primary/20",
+    highlight: "4 tier packages",
+  },
+] as const;
+
+const orgLabels = {
+  experience: "Organization Experience",
+  leading: "Leading initiatives, securing partnerships, and delivering impact at scale",
+} as const;
+
 const headerVariantsLocal: Variants = headerVariants.standard;
 
-type OrgItem = {
-  title: string;
-  event: string;
-  org: string;
-  period: string;
-  points: string[];
-  icon: keyof typeof iconMap;
-  color: string;
-  bgColor: string;
-  borderColor: string;
-  highlight: string;
-};
-
 export default function Organization() {
-  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
-
-  const orgs = t("organization.items", { returnObjects: true }) as OrgItem[];
-  const labels = t("organization.labels", { returnObjects: true }) as {
-    experience: string;
-    leading: string;
-  };
 
   return (
     <section
@@ -87,13 +106,13 @@ export default function Organization() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            {labels.experience}
+            {orgLabels.experience}
           </span>
           <h2 id="organization-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            {t("organization.title")}
+            Organization & Leadership
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            {labels.leading}
+            {orgLabels.leading}
           </p>
         </motion.div>
 
