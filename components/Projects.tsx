@@ -10,7 +10,6 @@ import {
   headerVariants,
   containerVariants,
 } from "@/lib/animations";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const iconMap = {
   Globe,
@@ -23,19 +22,75 @@ type ProjectItem = {
   title: string;
   description: string;
   period: string;
-  tech: string[];
-  points: string[];
+  tech: readonly string[];
+  points: readonly string[];
   links: { demo: string; github: string };
   color: string;
   icon: keyof typeof iconMap;
 };
 
+const projects = [
+  {
+    title: "RUKUN",
+    description: "Internship Project at PT Cazh Teknologi Inovasi",
+    period: "May 2025 - July 2025",
+    tech: ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+    points: [
+      "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
+      "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
+      "Configured state management and route middleware for secure multi-level authentication flows."
+    ],
+    links: { demo: "#", github: "#" },
+    color: "from-blue-500 via-cyan-500 to-blue-600",
+    icon: "Globe"
+  },
+  {
+    title: "PUSON",
+    description: "Posyandu untuk Stunting Online — Academic Project",
+    period: "March 2025 - Sep 2025",
+    tech: ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
+    points: [
+      "Developed and executed comprehensive test plans and test cases to identify software defects.",
+      "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
+      "Documented system anomalies and collaborated with the development team to resolve critical bugs."
+    ],
+    links: { demo: "#", github: "#" },
+    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    icon: "Shield"
+  },
+  {
+    title: "Portfolio 3D",
+    description: "Personal Portfolio with Three.js & Framer Motion",
+    period: "July 2025 - Present",
+    tech: ["Next.js 16", "React Three Fiber", "Framer Motion", "Tailwind CSS", "TypeScript"],
+    points: [
+      "Built immersive 3D hero with WebGL floating geometries and glassmorphism materials.",
+      "Implemented scroll-triggered animations with spring physics and reduced-motion support.",
+      "Optimized for Core Web Vitals with dynamic imports and static generation."
+    ],
+    links: { demo: "#", github: "#" },
+    color: "from-violet-500 via-purple-500 to-pink-500",
+    icon: "Layers"
+  },
+  {
+    title: "TaskFlow",
+    description: "Real-time Collaborative Task Manager",
+    period: "Jan 2025 - Mar 2025",
+    tech: ["Next.js", "Socket.io", "Prisma", "PostgreSQL", "Tailwind"],
+    points: [
+      "Implemented real-time collaboration with WebSocket connections for live updates.",
+      "Designed responsive Kanban board with drag-and-drop using @dnd-kit.",
+      "Built authentication with NextAuth.js supporting OAuth and credentials."
+    ],
+    links: { demo: "#", github: "#" },
+    color: "from-amber-500 via-orange-500 to-red-500",
+    icon: "Zap"
+  }
+] as const;
+
 export default function Projects() {
-  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
-
-  const projects = t("projects.items", { returnObjects: true }) as ProjectItem[];
 
   // Use shared header variants
   const headerVariantsLocal = headerVariants.standard;
@@ -159,11 +214,11 @@ export default function Projects() {
             <motion.div variants={contentVariants} className="flex items-center gap-3 pt-2 border-t border-border/50">
               <a href={project.links.demo} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group">
                 <ExternalLink className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-                {t("projects.viewDemo")}
+                View Demo
               </a>
               <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300 group">
                 <GitBranch className="size-4" aria-hidden="true" />
-                {t("projects.viewCode")}
+                View Code
               </a>
             </motion.div>
           </CardContent>
@@ -192,10 +247,10 @@ export default function Projects() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            {t("projects.title")}
+            Projects
           </span>
           <h2 id="projects-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            {t("projects.subtitle")}
+            Selected work I've built
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Real-world applications built with modern tech stacks
@@ -209,7 +264,7 @@ export default function Projects() {
           animate={isInView ? "show" : "hidden"}
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-2"
           role="list"
-          aria-label={t("projects.title")}
+          aria-label="Projects"
         >
           {projects.map((project, i) => (
             <ProjectCard key={project.title} project={project} index={i} isInView={isInView} />
