@@ -6,7 +6,6 @@ import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
 import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 import { MatrixText } from "@/components/ui/MatrixText";
 
 const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground"), {
@@ -34,7 +33,6 @@ const heroItemVariantsFast: Variants = {
 
 export default function Hero() {
   const reducedMotion = useReducedMotion();
-  const { t } = useTranslation();
   const badgeRef = useRef<HTMLParagraphElement>(null);
 
   // Initialize cursor effects
@@ -118,7 +116,7 @@ export default function Hero() {
             />
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
           </span>
-          {t("hero.badge")}
+          "Informatics Engineering Graduate"
         </motion.p>
 
         {/* Name - staggered with matrix effect */}
@@ -161,7 +159,7 @@ export default function Hero() {
           variants={itemVariants}
           className="mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-balance"
         >
-          {t("hero.subtitle")}
+          "Frontend developer & problem solver. Passionate about building clean, performant web experiences that make a difference."
         </motion.p>
 
         {/* CTA Buttons - staggered with spring hover/tap */}
@@ -181,7 +179,7 @@ export default function Hero() {
             whileTap={reducedMotion ? {} : { scale: 0.98 }}
             transition={transition}
           >
-            <span className="relative z-10">{t("hero.ctaContact")}</span>
+            <span className="relative z-10">"Get in Touch"</span>
             <motion.span
               className="absolute inset-0 bg-linear-to-r from-violet-500 via-purple-500 to-pink-500 opacity-0 group-hover:opacity-100"
               style={{ backgroundSize: "200% 200%" }}
@@ -210,7 +208,7 @@ export default function Hero() {
             transition={transition}
           >
             <Download className="size-4" />
-            <span className="relative z-10">{t("hero.ctaCv")}</span>
+            <span className="relative z-10">"Download CV"</span>
           </motion.a>
         </motion.div>
 
