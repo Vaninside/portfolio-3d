@@ -10,7 +10,6 @@ import {
   containerVariants,
   headerVariants,
 } from "@/lib/animations";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const iconMap = {
   GraduationCap,
@@ -19,6 +18,44 @@ const iconMap = {
   Code2,
   Medal,
 };
+
+const EDUCATION = [
+  {
+    degree: "Bachelor's Degree, Informatics Engineering",
+    school: "Telkom University",
+    location: "Campus Purwokerto",
+    period: "Sept 2022 — Feb 2026",
+    gpa: "3.75 / 4.00",
+    thesis: "Fine-tuning IndoBERT Model for Sentiment Analysis and Comparative Study of Optimizers",
+    honors: ["Top 2 selling on Telkom University Campus Purwokerto Market Day 2025"],
+    subjects: [
+      "Machine Learning",
+      "Deep Learning",
+      "Natural Language Processing",
+      "Data Mining",
+      "Software Engineering",
+      "Algorithm & Data Structures",
+    ],
+  },
+] as const;
+
+const CERTIFICATIONS = [
+  { name: "React Developer Certification", issuer: "Meta", year: "2024", icon: "Code2" as const },
+  { name: "TypeScript Professional", issuer: "Microsoft", year: "2024", icon: "Code2" as const },
+  { name: "AWS Cloud Practitioner", issuer: "Amazon Web Services", year: "2023", icon: "Award" as const },
+  { name: "Google UX Design", issuer: "Google", year: "2023", icon: "Medal" as const },
+  { name: "Next.js App Router Mastery", issuer: "Vercel", year: "2024", icon: "Code2" as const },
+] as const;
+
+const EDU_LABELS = {
+  period: "Period",
+  location: "Location",
+  thesis: "Thesis",
+  honors: "Honors & Achievements",
+  subjects: "Key Coursework",
+  certifications: "Certifications",
+  continuousLearning: "Continuous learning & professional development",
+} as const;
 
 // Education-specific variants using shared configs
 const cardVariants: Variants = {
@@ -42,38 +79,9 @@ const certVariants: Variants = {
 };
 
 export default function Education() {
-  const { t } = useTranslation();
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const reducedMotion = useReducedMotion();
-
-  const education = t("education.items", { returnObjects: true }) as Array<{
-    degree: string;
-    school: string;
-    location: string;
-    period: string;
-    gpa: string;
-    thesis: string;
-    honors: string[];
-    subjects: string[];
-  }>;
-
-  const certifications = t("education.certifications", { returnObjects: true }) as Array<{
-    name: string;
-    issuer: string;
-    year: string;
-    icon: keyof typeof iconMap;
-  }>;
-
-  const labels = t("education.labels", { returnObjects: true }) as {
-    period: string;
-    location: string;
-    thesis: string;
-    honors: string;
-    subjects: string;
-    certifications: string;
-    continuousLearning: string;
-  };
 
   return (
     <section
@@ -92,13 +100,16 @@ export default function Education() {
         >
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold text-primary bg-primary/10 border border-primary/20 tracking-widest uppercase mb-6">
             <span className="relative flex h-1.5 w-1.5">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" style={{ animationDuration: reducedMotion ? "0.01s" : "2s" }} />
+              <span
+                className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"
+                style={{ animationDuration: reducedMotion ? "0.01s" : "2s" }}
+              />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            {t("education.title")}
+            Education
           </span>
           <h2 id="education-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            {t("education.subtitle")}
+            My academic background
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Foundation built on rigorous coursework, research, and continuous learning
@@ -112,7 +123,7 @@ export default function Education() {
           animate={isInView ? "show" : "hidden"}
           className="space-y-8"
         >
-          {education.map((edu) => (
+          {EDUCATION.map((edu) => (
             <motion.div
               key={edu.degree}
               variants={cardVariants}
@@ -120,7 +131,7 @@ export default function Education() {
               whileHover={{ y: -2 }}
             >
               {/* Gradient top border */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-violet-500 to-pink-500" aria-hidden="true" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-violet-500 to-pink-500" aria-hidden="true" />
 
               <div className="p-6 md:p-8">
                 {/* Header */}
@@ -151,7 +162,7 @@ export default function Education() {
                       <BookOpen className="size-5" aria-hidden="true" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-foreground">{labels.thesis}</h4>
+                      <h4 className="font-semibold text-foreground">{EDU_LABELS.thesis}</h4>
                       <p className="text-muted-foreground mt-1">{edu.thesis}</p>
                     </div>
                   </div>
@@ -163,7 +174,7 @@ export default function Education() {
                   <div>
                     <h4 className="font-semibold text-foreground flex items-center gap-2 mb-4">
                       <Award className="size-5 text-primary" aria-hidden="true" />
-                      {labels.honors}
+                      {EDU_LABELS.honors}
                     </h4>
                     <ul className="space-y-2" role="list">
                       {edu.honors.map((honor) => (
@@ -185,7 +196,7 @@ export default function Education() {
                   <div>
                     <h4 className="font-semibold text-foreground flex items-center gap-2 mb-4">
                       <Code2 className="size-5 text-primary" aria-hidden="true" />
-                      {labels.subjects}
+                      {EDU_LABELS.subjects}
                     </h4>
                     <div className="flex flex-wrap gap-2" role="list">
                       {edu.subjects.map((subject) => (
@@ -214,8 +225,8 @@ export default function Education() {
           className="mt-16"
         >
           <div className="text-center mb-10">
-            <h3 className="text-2xl font-bold tracking-tight">{labels.certifications}</h3>
-            <p className="text-muted-foreground mt-2">{labels.continuousLearning}</p>
+            <h3 className="text-2xl font-bold tracking-tight">{EDU_LABELS.certifications}</h3>
+            <p className="text-muted-foreground mt-2">{EDU_LABELS.continuousLearning}</p>
           </div>
 
           <motion.div
@@ -224,7 +235,7 @@ export default function Education() {
             animate={isInView ? "show" : "hidden"}
             className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
           >
-            {certifications.map((cert) => {
+            {CERTIFICATIONS.map((cert) => {
               const CertIcon = iconMap[cert.icon as keyof typeof iconMap];
               return (
                 <motion.div
