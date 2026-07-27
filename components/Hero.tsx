@@ -8,7 +8,7 @@ import { animateBadgePulse } from "@/lib/micro-interactions";
 import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
 import { MatrixText } from "@/components/ui/MatrixText";
 
-const ThreeBackground = dynamic(() => import("@/components/three/ThreeBackground"), {
+const ParticleBackground = dynamic(() => import("@/components/ParticleBackground"), {
   ssr: false,
   loading: () => null,
 });
@@ -71,8 +71,8 @@ export default function Hero() {
       className="relative min-h-dvh flex items-center justify-center px-6 overflow-hidden isolation"
       role="banner"
     >
-      {/* 3D Background */}
-      <ThreeBackground />
+      {/* Particle network background */}
+      <ParticleBackground />
 
       {/* Radial gradient glow behind content (light/dark adaptive) */}
       <div
