@@ -27,7 +27,6 @@ import {
   animateCardHover,
   animateBadgeHover,
 } from "@/lib/micro-interactions";
-import { useTranslation } from "@/lib/i18n/useTranslation";
 
 const iconMap = {
   Code,
@@ -41,37 +40,116 @@ const iconMap = {
   Target,
   Lightbulb,
   Users,
-};
+} as const;
+
+const technicalSkills = [
+  {
+    category: "Frontend",
+    icon: "Code" as const,
+    color: "from-blue-500 via-cyan-500 to-blue-600",
+    skills: [
+      "React 18 / Next.js 16 (App Router)",
+      "TypeScript (Strict Mode)",
+      "Tailwind CSS v4 / CSS Variables",
+      "Framer Motion / GSAP",
+      "React Three Fiber / Three.js",
+      "Shadcn/UI / Radix UI",
+      "Zustand / React Context",
+      "React Hook Form / Zod",
+    ],
+  },
+  {
+    category: "Backend & API",
+    icon: "Server" as const,
+    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    skills: [
+      "Node.js / Express / Fastify",
+      "RESTful API Design",
+      "GraphQL (Apollo / URQL)",
+      "Prisma ORM / Drizzle ORM",
+      "PostgreSQL / MySQL / MongoDB",
+      "Redis (Caching / Sessions)",
+      "WebSocket / Socket.io",
+      "NextAuth.js / Clerk",
+    ],
+  },
+  {
+    category: "DevOps & Tools",
+    icon: "Database" as const,
+    color: "from-violet-500 via-purple-500 to-pink-500",
+    skills: [
+      "Git / GitHub / GitLab CI",
+      "Vercel / Netlify / AWS Amplify",
+      "Docker / Docker Compose",
+      "ESLint / Prettier / Husky",
+      "Vitest / Jest / Playwright",
+      "Turborepo / Nx",
+      "pnpm / npm Workspaces",
+      "VS Code / Cursor / Warp",
+    ],
+  },
+  {
+    category: "Testing & Quality",
+    icon: "Shield" as const,
+    color: "from-amber-500 via-orange-500 to-red-500",
+    skills: [
+      "Unit Testing (Vitest / Jest)",
+      "Integration Testing (MSW)",
+      "E2E Testing (Playwright / Cypress)",
+      "Component Testing (Storybook + Vitest)",
+      "Visual Regression (Chromatic)",
+      "Accessibility Testing (axe-core)",
+      "Performance Profiling (Lighthouse CI)",
+      "Type Safety (tsc --strict)",
+    ],
+  },
+] as const;
+
+const softSkills = [
+  {
+    label: "Problem Solving",
+    icon: "Brain" as const,
+    desc: "Break down complex challenges into manageable, testable solutions",
+  },
+  {
+    label: "Communication",
+    icon: "MessageSquare" as const,
+    desc: "Clear technical communication across design, product, and engineering",
+  },
+  {
+    label: "Time Management",
+    icon: "Clock" as const,
+    desc: "Prioritize effectively, deliver iteratively, meet deadlines reliably",
+  },
+  {
+    label: "Leadership",
+    icon: "Target" as const,
+    desc: "Mentored junior developers, led lab sessions (50+ students), organized 1000+ attendee events",
+  },
+  {
+    label: "Adaptability",
+    icon: "Lightbulb" as const,
+    desc: "Quick learner — picked up Vue/Nuxt in 2 weeks for RUKUN internship project",
+  },
+  {
+    label: "Collaboration",
+    icon: "Users" as const,
+    desc: "Cross-functional teamwork: designers, PMs, QA, backend, stakeholders",
+  },
+] as const;
+
+const languages = [
+  { name: "Indonesian", level: "Native", icon: "Globe" as const },
+  { name: "English", level: "Professional (TOEFL 550+)", icon: "Globe" as const },
+  { name: "Javanese", level: "Conversational", icon: "Globe" as const },
+] as const;
 
 export default function Skills() {
-  const { t } = useTranslation();
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const reducedMotion = useReducedMotion();
   const skillCardRefs = useRef<(HTMLElement | null)[]>([]);
   const badgeRefs = useRef<(HTMLElement | null)[]>([]);
-
-  // Technical skills from translation
-  const technicalSkills = t("skills.technicalSkills", { returnObjects: true }) as Array<{
-    category: string;
-    icon: keyof typeof iconMap;
-    color: string;
-    skills: string[];
-  }>;
-
-  // Soft skills from translation
-  const softSkills = t("skills.softSkills", { returnObjects: true }) as Array<{
-    label: string;
-    icon: keyof typeof iconMap;
-    desc: string;
-  }>;
-
-  // Languages from translation
-  const languages = t("skills.languages", { returnObjects: true }) as Array<{
-    name: string;
-    level: string;
-    icon: keyof typeof iconMap;
-  }>;
 
   // Skill-specific variants (not in shared lib)
   const softCardVariants: Variants = {
@@ -138,10 +216,10 @@ export default function Skills() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" style={{ animationDuration: reducedMotion ? "0.01s" : "2s" }} />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            {t("skills.title")}
+            Skills
           </span>
           <h2 id="skills-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            {t("skills.subtitle")}
+            Technologies I work with and competencies I bring to every team
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Technologies I work with and competencies I bring to every team
@@ -155,10 +233,10 @@ export default function Skills() {
           animate={isInView ? "show" : "hidden"}
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
           role="list"
-          aria-label={t("skills.categories.frontend")}
+          aria-label="Frontend"
         >
           {technicalSkills.map((category, i) => {
-            const CategoryIcon = iconMap[category.icon as keyof typeof iconMap];
+            const CategoryIcon = iconMap[category.icon];
             return (
               <motion.article
                 key={category.category}
@@ -233,7 +311,7 @@ export default function Skills() {
         >
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-              {t("skills.softSkills.label")} <span className="text-primary">{t("skills.softSkills.skills")}</span>
+              Soft Skills
             </h3>
             <p className="text-muted-foreground">
               Complementary competencies that make collaboration effective
@@ -247,7 +325,7 @@ export default function Skills() {
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {softSkills.map((skill) => {
-              const SoftSkillIcon = iconMap[skill.icon as keyof typeof iconMap];
+              const SoftSkillIcon = iconMap[skill.icon];
               return (
                 <motion.div
                   key={skill.label}
@@ -286,7 +364,7 @@ export default function Skills() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
             {languages.map((lang) => {
-              const LangIcon = iconMap[lang.icon as keyof typeof iconMap];
+              const LangIcon = iconMap[lang.icon];
               return (
                 <motion.div
                   key={lang.name}
