@@ -4,11 +4,8 @@ import { useEffect, useState, useCallback, useMemo } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useTranslation } from "@/lib/i18n/useTranslation";
-import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 
 export default function Navbar() {
-  const { t } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("");
@@ -19,18 +16,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // nav links - memoized to avoid recreation on each render
+  // nav links - inline English from en.json nav section
   const navLinks = useMemo(
     () => [
-      { label: t("nav.about" as const), href: "#about" },
-      { label: t("nav.experience" as const), href: "#experience" },
-      { label: t("nav.projects" as const), href: "#projects" },
-      { label: t("nav.skills" as const), href: "#skills" },
-      { label: t("nav.contact" as const), href: "#contact" },
-      // Test: this should cause a TypeScript error if uncommented
-      // { label: t("nav.nonexistent" as const), href: "#test" },
+      { label: "About", href: "#about" },
+      { label: "Experience", href: "#experience" },
+      { label: "Projects", href: "#projects" },
+      { label: "Skills", href: "#skills" },
+      { label: "Contact", href: "#contact" },
     ],
-    [t]
+    []
   );
 
   // active section tracking via IntersectionObserver
@@ -110,7 +105,6 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
-            <LanguageSwitcher />
           <button
             onClick={() => setOpen(!open)}
             className="md:hidden size-9 inline-flex items-center justify-center rounded-full hover:bg-accent/10 transition-colors"
