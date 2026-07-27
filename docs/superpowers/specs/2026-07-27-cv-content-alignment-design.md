@@ -12,17 +12,23 @@ makes every user-visible claim on the site match the CV at
 `tasks/cv_evan.md` — correcting factual fields, deleting fabricated content,
 and rewriting the Skills section to only real, confirmed competencies.
 
-The CV is the single source of truth. The only additions beyond the CV's
-literal text are frontend/data skills the user explicitly confirmed he uses
-(TypeScript, Tailwind, React, Framer Motion, Python, QA/Testing) and the
-in-progress portfolio itself as a third project.
+The CV is the primary source of truth, supplemented by the user's verified
+LinkedIn/GitHub credentials (9 real certifications — a superset of the CV's
+list) and two confirmed-real organization metrics (Todays 2025: 1000+ new
+students; TUPEC: 100+ participants). The only additions beyond documented
+credentials are frontend/data skills the user explicitly confirmed he uses
+(TypeScript, Tailwind, React, Framer Motion, Python, QA/Testing, plus Node.js
+and SQL backed by his Dicoding certs) and the in-progress portfolio itself as a
+third project.
 
 ## Goals
 
 - Every factual claim (contact, education, experience, certifications,
   organizations) matches the CV exactly.
 - Remove all fabricated content: fake certs, the TaskFlow project, invented
-  tech stacks, fake language proficiencies, fabricated metrics.
+  tech stacks, fake language proficiencies (TOEFL 550+, Javanese), and
+  fabricated metrics ("50+ students", "Vue in 2 weeks"). Note: the org
+  attendance figures (Todays 1000+, TUPEC 100+) are REAL and are kept.
 - Rewrite Skills to reflect only CV skills + user-confirmed real skills.
 - Keep the site's existing visual design, layout, and animations unchanged —
   this is a content edit only.
@@ -44,9 +50,29 @@ CV file: `tasks/cv_evan.md`. Key facts:
 - Education: Bachelor's, Informatics Engineering, Telkom University Campus
   Purwokerto, Sept 2022 – Feb 2026, GPA 3.75/4.00, Thesis: "Fine-tuning
   IndoBERT Model for Sentiment Analysis and Comparative Study of Optimizers"
-- Certifications: Belajar Dasar Data Science (Dicoding), Belajar Dasar AI
-  (Dicoding), EPrT English Proficiency Test (Telkom University)
+- Certifications (9 total, from the user's LinkedIn/GitHub credentials — a
+  superset of the CV's list): see the Education section for the full list.
 - Languages: English, Indonesian (only these two)
+
+### Certifications (authoritative list — 9)
+
+All issued 2025. Credential IDs recorded here for reference but NOT rendered
+(the cards show name + issuer + year only, per the user's choice).
+
+1. EPrT (English Proficiency Test) — Telkom University Language Center — 2025
+2. Belajar Back-End Pemula dengan JavaScript — Dicoding — 2025
+3. Belajar Dasar Pemrograman JavaScript — Dicoding — 2025
+4. Belajar Dasar Cloud dan Gen AI di AWS — Dicoding — 2025
+5. Memulai Pemrograman dengan Python — Dicoding — 2025
+6. Belajar Dasar Data Science — Dicoding — 2025
+7. Belajar Dasar AI — Dicoding — 2025
+8. Belajar Dasar Visualisasi Data — Dicoding — 2025
+9. Belajar Dasar Structured Query Language (SQL) — Dicoding — 2025
+
+### Organization metrics (both real, confirmed by user)
+
+- Todays 2025 (BEM KEMA): highlight "1000+ mahasiswa baru" — REAL, keep it.
+- TUPEC E-Sport Event: highlight "100+ peserta" — REAL, ~100 participants.
 
 ## Per-Component Changes
 
@@ -57,17 +83,20 @@ CV file: `tasks/cv_evan.md`. Key facts:
 - Location `Yogyakarta, Indonesia` → `Purbalingga, Central Java`; update the
   `maps.google.com` query to `Purbalingga,Indonesia`.
 - Remove the Twitter/X social link (`x.com/vaninside` — not in CV, not a
-  confirmed account). Keep GitHub (`github.com/vaninside`) and LinkedIn.
+  confirmed account). Keep GitHub (`github.com/vaninside`) and LinkedIn
+  (`linkedin.com/in/evanrafifpradana`). LinkedIn must be prominently present as
+  a social link (the user explicitly asked to keep/emphasize it) — verify the
+  href is exactly `https://linkedin.com/in/evanrafifpradana` and the icon reads
+  as LinkedIn, not a generic external-link glyph.
 - Leave the contact form, its placeholder strings, validation, and topic
   options as-is (they are UI scaffolding, not CV claims). The form's example
   email placeholder `evan@example.com` stays (it's a placeholder, not a claim).
 
 ### `components/About.tsx`
 - Location line `Yogyakarta, Indonesia` → `Purbalingga, Central Java`.
-- `aboutSkills` card descriptions: remove the fabricated metric
-  "Event Organizer (1000+ attendees)" → phrasing that matches the CV without
-  invented numbers ("Lab Assistant, Event Organizer"). Keep GPA 3.75/4.00 and
-  the IndoBERT thesis reference (both real).
+- `aboutSkills` card descriptions: the "Event Organizer (1000+ attendees)"
+  metric is REAL (Todays 2025 had 1000+ new students) — keep it. Keep GPA
+  3.75/4.00 and the IndoBERT thesis reference (both real).
 - Intro paragraph: align to the CV summary — Informatics Engineering fresh
   graduate from Telkom University blending frontend development, data analysis,
   and operational leadership. No fabricated numbers.
@@ -77,13 +106,17 @@ CV file: `tasks/cv_evan.md`. Key facts:
 
 ### `components/Education.tsx`
 - Replace the entire `CERTIFICATIONS` array (React/Meta, TypeScript/Microsoft,
-  AWS, Google UX, Next.js/Vercel — all fake) with the three real certs:
-  - `Belajar Dasar Data Science` — Dicoding
-  - `Belajar Dasar AI` — Dicoding
-  - `EPrT (English Proficiency Test)` — Telkom University
-  The CV gives no years; make the `year` field optional and leave it empty —
-  do not invent years. If the card layout requires a value, omit the year
-  element rather than fabricating one.
+  AWS, Google UX, Next.js/Vercel — all fake) with the nine real certs listed in
+  the "Certifications (authoritative list — 9)" section above. Render each card
+  as **name + issuer + year (2025)** only — no Credential ID. Issuers:
+  "Telkom University" for EPrT, "Dicoding" for the other eight.
+  - Pick a sensible existing icon per cert from the component's `iconMap`
+    (e.g. Code2 for the programming/back-end/SQL certs, Award/Medal for
+    EPrT, Brain/Award for AI/Data Science). Do not add new icon imports beyond
+    what the component already supports; reuse the existing set.
+  - Nine cards is more than the old five — confirm the grid/layout flows
+    naturally (it uses a responsive grid; no layout change needed, just more
+    items).
 - Remove the fabricated honor "Top 2 selling on Telkom University Campus
   Purwokerto Market Day 2025" from `EDUCATION[0].honors`. The CV lists no
   honors, so the honors array becomes empty and the Honors block is not
@@ -108,11 +141,14 @@ CV file: `tasks/cv_evan.md`. Key facts:
     Framer Motion
   - Data & AI: Python, Machine Learning / NLP, Data Analysis & Data Science,
     Data Visualization, Generative AI, AWS
-  - Languages & Tools: JavaScript, PHP, Git, REST API, Clean Code, QA / Testing
+  - Languages & Tools: JavaScript, Node.js, PHP, SQL, Git, REST API, Clean
+    Code, QA / Testing
+    (Node.js and SQL are backed by the user's Dicoding back-end and SQL certs.)
 - Soft skills: align to CV — Teamwork, Problem-Solving, Communication,
   Cross-functional Coordination, Inventory Management, Leadership. Remove
-  fabricated specifics ("50+ students", "picked up Vue/Nuxt in 2 weeks",
-  "1000+ attendee events") — keep neutral CV-true descriptions.
+  fabricated specifics ("50+ students", "picked up Vue/Nuxt in 2 weeks"). The
+  "1000+ attendee events" reference is REAL (Todays 2025) and may stay, but
+  keep descriptions concise and CV-true.
 - Languages: English, Indonesian only. Remove "Javanese" and the invented
   "TOEFL 550+" proficiency label. Use plain proficiency wording (e.g.
   "Professional" / "Native") without fabricated test scores.
@@ -121,10 +157,11 @@ CV file: `tasks/cv_evan.md`. Key facts:
 - Fix event name `TUPE E-Sport Event` → `TUPEC E-Sport Event` (the CV names the
   event "TUP E-Sports Championship Season 4"; keep that season detail in the
   description).
-- Remove the fabricated `highlight: "1000+ attendees"` metric on the Todays
-  2025 role → a neutral highlight (e.g. "Logistics & Operations") or drop the
-  highlight field. Keep the "4 tier packages" highlight on the sponsorship role
-  (Silver/Gold/Platinum/Diamond is stated verbatim in the CV).
+- Highlights (both real): Todays 2025 role → "1000+ mahasiswa baru" (keep;
+  this metric is confirmed real). TUPEC sponsorship role → change the current
+  "4 tier packages" highlight to "100+ peserta" per the user's choice. (The
+  4-tier package detail — Silver/Gold/Platinum/Diamond — remains in the role's
+  description bullets, just not as the headline badge.)
 - Keep both roles' descriptions (already accurate to CV).
 
 ### `components/Experience.tsx`
