@@ -9,10 +9,35 @@ import {
   containerVariants,
   headerVariants,
 } from "@/lib/animations";
-import { useTranslation } from "@/lib/i18n/useTranslation";
+
+const experienceItems = [
+  {
+    role: "Frontend Web Developer Intern",
+    company: "PT Cazh Teknologi Inovasi",
+    location: "Purwokerto",
+    period: "May 2025 - July 2025",
+    points: [
+      "Spearheaded frontend web development for the \"Rukun\" application using Vue.js/Nuxt.js.",
+      "Designed and implemented interactive dashboards for complex data visualization, user management, and profile management.",
+      "Engineered secure authentication workflows, including login, registration, password reset, and route protection using middleware."
+    ],
+    tech: ["Vue.js", "Nuxt.js", "TypeScript", "Tailwind CSS", "Pinia"]
+  },
+  {
+    role: "Laboratory Assistant - Software Construction",
+    company: "Programming Lab, Telkom University",
+    location: "Purwokerto",
+    period: "Feb 2025 - June 2025",
+    points: [
+      "Guided students through software design, development, testing, and maintenance processes.",
+      "Conducted on-site problem-solving and ensured operational procedures complied with standards.",
+      "Mentored students on implementing proper coding practices, debugging, and code reviews."
+    ],
+    tech: ["JavaScript", "React", "Node.js", "Git", "Testing"]
+  }
+] as const;
 
 export default function Experience() {
-  const { t } = useTranslation();
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end end"] });
@@ -43,16 +68,6 @@ export default function Experience() {
 
   const headerVariantsLocal: Variants = headerVariants.standard;
 
-  // Experience items from translation
-  const experienceItems = t("experience.items", { returnObjects: true }) as Array<{
-    role: string;
-    company: string;
-    location: string;
-    period: string;
-    points: string[];
-    tech: string[];
-  }>;
-
   return (
     <section
       ref={sectionRef}
@@ -73,10 +88,10 @@ export default function Experience() {
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75" />
               <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-primary" />
             </span>
-            {t("experience.title")}
+            Experience
           </span>
           <h2 id="experience-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            {t("experience.subtitle")}
+            My professional journey so far
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Building real-world products and mentoring the next generation
