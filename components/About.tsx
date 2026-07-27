@@ -69,10 +69,10 @@ export default function About() {
             className="space-y-6 text-muted-foreground leading-relaxed"
           >
             <p className="text-lg md:text-xl font-medium text-foreground">
-              I'm a Frontend Developer with an Informatics Engineering background, passionate about creating intuitive and performant web experiences. With expertise in React, Next.js, TypeScript, and modern CSS, I focus on writing clean, maintainable, and scalable code.
+              I&apos;m an Informatics Engineering graduate from Telkom University, blending frontend web development with data analysis and hands-on operational leadership. I build clean, performant web experiences with Vue, Nuxt, and Next.js.
             </p>
             <p>
-              When not coding, you'll find me exploring new technologies, contributing to open-source projects, or sharing knowledge through technical writing. I believe in continuous learning and enjoy tackling complex challenges that push the boundaries of what's possible on the web.
+              I&apos;ve shipped a production frontend as an intern at PT Cazh Teknologi Inovasi, mentored students as a Software Construction Lab Assistant, and coordinated logistics for large-scale campus events. I enjoy turning complex problems into clear, testable solutions.
             </p>
 
             {/* Highlights */}
@@ -126,26 +126,26 @@ export default function About() {
                 <div className="text-center">
                   <h3 className="text-2xl font-bold tracking-tight">Evan Rafif Pradana</h3>
                   <p className="text-primary font-medium mt-1">Informatics Engineering Graduate</p>
-                  <p className="text-sm text-muted-foreground mt-2">Yogyakarta, Indonesia</p>
+                  <p className="text-sm text-muted-foreground mt-2">Purbalingga, Central Java</p>
                 </div>
 
                 {/* Quick stats */}
                 <div className="grid grid-cols-2 gap-4 pt-4 border-t border-border">
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
                     <div className="text-3xl font-bold tracking-tight text-primary">3.75</div>
-                    <div className="text-xs text-muted-foreground">GPA: 3.75/4.00</div>
+                    <div className="text-xs text-muted-foreground">GPA / 4.00</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
-                    <div className="text-3xl font-bold tracking-tight text-primary">2+</div>
-                    <div className="text-xs text-muted-foreground">Projects Completed</div>
+                    <div className="text-3xl font-bold tracking-tight text-primary">9</div>
+                    <div className="text-xs text-muted-foreground">Certifications</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
                     <div className="text-3xl font-bold tracking-tight text-primary">2</div>
-                    <div className="text-xs text-muted-foreground">Present</div>
+                    <div className="text-xs text-muted-foreground">Work Experiences</div>
                   </div>
                   <div className="text-center p-3 rounded-xl bg-background/50 border border-border/50">
-                    <div className="text-3xl font-bold tracking-tight text-primary">5+</div>
-                    <div className="text-xs text-muted-foreground">2024</div>
+                    <div className="text-3xl font-bold tracking-tight text-primary">2026</div>
+                    <div className="text-xs text-muted-foreground">Graduated</div>
                   </div>
                 </div>
 
