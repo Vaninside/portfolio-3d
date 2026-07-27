@@ -60,32 +60,18 @@ const projects = [
   },
   {
     title: "Portfolio 3D",
-    description: "Personal Portfolio with Three.js & Framer Motion",
+    description: "Personal Portfolio — Next.js & Framer Motion",
     period: "July 2025 - Present",
-    tech: ["Next.js 16", "React Three Fiber", "Framer Motion", "Tailwind CSS", "TypeScript"],
+    tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS"],
     points: [
-      "Built immersive 3D hero with WebGL floating geometries and glassmorphism materials.",
+      "Built an interactive particle-network canvas hero background reactive to the cursor.",
       "Implemented scroll-triggered animations with spring physics and reduced-motion support.",
-      "Optimized for Core Web Vitals with dynamic imports and static generation."
+      "Optimized with dynamic imports and off-screen pausing for smooth performance.",
     ],
-    links: { demo: "#", github: "#" },
+    links: { demo: "#", github: "https://github.com/vaninside/portfolio-3d" },
     color: "from-violet-500 via-purple-500 to-pink-500",
-    icon: "Layers"
+    icon: "Layers",
   },
-  {
-    title: "TaskFlow",
-    description: "Real-time Collaborative Task Manager",
-    period: "Jan 2025 - Mar 2025",
-    tech: ["Next.js", "Socket.io", "Prisma", "PostgreSQL", "Tailwind"],
-    points: [
-      "Implemented real-time collaboration with WebSocket connections for live updates.",
-      "Designed responsive Kanban board with drag-and-drop using @dnd-kit.",
-      "Built authentication with NextAuth.js supporting OAuth and credentials."
-    ],
-    links: { demo: "#", github: "#" },
-    color: "from-amber-500 via-orange-500 to-red-500",
-    icon: "Zap"
-  }
 ] as const;
 
 export default function Projects() {
