@@ -69,6 +69,19 @@ interface SocialLinkItem {
   color: string;
 }
 
+function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z" />
+    </svg>
+  );
+}
+
 type IconName = keyof typeof iconMap;
 const iconMap = {
   Mail,
@@ -78,28 +91,29 @@ const iconMap = {
   GitBranch,
   ExternalLink,
   Send,
+  Linkedin: LinkedinIcon,
 };
 
 const contactInfo = [
   {
     label: "Email",
-    value: "evanrafifpradana@gmail.com",
+    value: "evanrafif45@gmail.com",
     icon: "Mail",
-    href: "mailto:evanrafifpradana@gmail.com",
+    href: "mailto:evanrafif45@gmail.com",
     description: "Primary contact for opportunities",
   },
   {
     label: "Phone",
-    value: "+62 8xx-xxxx-xxxx",
+    value: "+62 823-2543-9854",
     icon: "Phone",
-    href: "tel:+628xxxxxxxxxx",
+    href: "tel:+6282325439854",
     description: "WhatsApp / Call available",
   },
   {
     label: "Location",
-    value: "Yogyakarta, Indonesia",
+    value: "Purbalingga, Central Java",
     icon: "MapPin",
-    href: "https://maps.google.com/?q=Yogyakarta,Indonesia",
+    href: "https://maps.google.com/?q=Purbalingga,Indonesia",
     description: "Open to relocation & remote",
   },
   {
@@ -113,8 +127,7 @@ const contactInfo = [
 
 const socialLinks = [
   { label: "GitHub", icon: "GitBranch", href: "https://github.com/vaninside", color: "hover:text-gray-400 dark:hover:text-gray-500" },
-  { label: "LinkedIn", icon: "ExternalLink", href: "https://linkedin.com/in/evanrafifpradana", color: "hover:text-primary/80 dark:hover:text-primary" },
-  { label: "Twitter / X", icon: "ExternalLink", href: "https://x.com/vaninside", color: "hover:text-sky-500" },
+  { label: "LinkedIn", icon: "Linkedin", href: "https://linkedin.com/in/evanrafifpradana", color: "hover:text-primary/80 dark:hover:text-primary" },
 ] as const;
 
 const formLabels = {
@@ -382,7 +395,7 @@ export default function Contact() {
             <div className="mt-8 pt-6 border-t border-border space-y-3">
               <a
                 data-hire-btn
-                href="mailto:evanrafifpradana@gmail.com?subject=Job Opportunity&body=Hi Evan,%0D%0A%0D%0AI came across your portfolio and..."
+                href="mailto:evanrafif45@gmail.com?subject=Job Opportunity&body=Hi Evan,%0D%0A%0D%0AI came across your portfolio and..."
                 className="flex w-full items-center justify-center gap-2 px-5 py-3 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300"
               >
                 <Mail className="size-4" aria-hidden="true" />
@@ -592,8 +605,8 @@ export default function Contact() {
         >
           <p className="text-sm text-muted-foreground">
             {footer.footerNote}{' '}
-            <a href="mailto:evanrafifpradana@gmail.com" className="font-medium text-primary hover:underline">
-              evanrafifpradana@gmail.com
+            <a href="mailto:evanrafif45@gmail.com" className="font-medium text-primary hover:underline">
+              evanrafif45@gmail.com
             </a>
           </p>
         </motion.div>

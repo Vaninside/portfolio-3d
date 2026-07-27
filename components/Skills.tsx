@@ -14,6 +14,8 @@ import {
   Brain,
   Lightbulb,
   Shield,
+  Braces,
+  Wrench,
   Globe as GlobeIcon,
 } from "lucide-react";
 import {
@@ -40,6 +42,8 @@ const iconMap = {
   Target,
   Lightbulb,
   Users,
+  Braces,
+  Wrench,
 } as const;
 
 const technicalSkills = [
@@ -48,100 +52,114 @@ const technicalSkills = [
     icon: "Code" as const,
     color: "from-blue-500 via-cyan-500 to-blue-600",
     skills: [
-      "React 18 / Next.js 16 (App Router)",
-      "TypeScript (Strict Mode)",
-      "Tailwind CSS v4 / CSS Variables",
-      "Framer Motion / GSAP",
-      "React Three Fiber / Three.js",
-      "Shadcn/UI / Radix UI",
-      "Zustand / React Context",
-      "React Hook Form / Zod",
+      "React",
+      "Next.js",
+      "Vue.js",
+      "Nuxt.js",
+      "Tailwind CSS",
+      "Framer Motion",
+      "HTML5",
+      "CSS3",
     ],
   },
   {
-    category: "Backend & API",
+    category: "Backend",
     icon: "Server" as const,
     color: "from-emerald-500 via-teal-500 to-emerald-600",
     skills: [
-      "Node.js / Express / Fastify",
-      "RESTful API Design",
-      "GraphQL (Apollo / URQL)",
-      "Prisma ORM / Drizzle ORM",
-      "PostgreSQL / MySQL / MongoDB",
-      "Redis (Caching / Sessions)",
-      "WebSocket / Socket.io",
-      "NextAuth.js / Clerk",
+      "Node.js",
+      "REST API",
+      "Authentication & Middleware",
+      "PHP",
+      "SQL / MySQL",
+      "Database Design",
+      "OOP",
+      "API Integration",
     ],
   },
   {
-    category: "DevOps & Tools",
-    icon: "Database" as const,
+    category: "Data & AI",
+    icon: "Brain" as const,
     color: "from-violet-500 via-purple-500 to-pink-500",
     skills: [
-      "Git / GitHub / GitLab CI",
-      "Vercel / Netlify / AWS Amplify",
-      "Docker / Docker Compose",
-      "ESLint / Prettier / Husky",
-      "Vitest / Jest / Playwright",
-      "Turborepo / Nx",
-      "pnpm / npm Workspaces",
-      "VS Code / Cursor / Warp",
+      "Machine Learning",
+      "Deep Learning",
+      "NLP / IndoBERT",
+      "Data Analysis",
+      "Data Science",
+      "Data Visualization",
+      "Generative AI",
+      "Model Fine-tuning",
     ],
   },
   {
-    category: "Testing & Quality",
-    icon: "Shield" as const,
+    category: "Programming Languages",
+    icon: "Braces" as const,
     color: "from-amber-500 via-orange-500 to-red-500",
     skills: [
-      "Unit Testing (Vitest / Jest)",
-      "Integration Testing (MSW)",
-      "E2E Testing (Playwright / Cypress)",
-      "Component Testing (Storybook + Vitest)",
-      "Visual Regression (Chromatic)",
-      "Accessibility Testing (axe-core)",
-      "Performance Profiling (Lighthouse CI)",
-      "Type Safety (tsc --strict)",
+      "JavaScript",
+      "TypeScript",
+      "Python",
+      "PHP",
+      "SQL",
+      "Java",
+      "C / C++",
+      "Dart",
+    ],
+  },
+  {
+    category: "Tools",
+    icon: "Wrench" as const,
+    color: "from-rose-500 via-pink-500 to-fuchsia-500",
+    skills: [
+      "Git / GitHub",
+      "VS Code",
+      "Postman",
+      "Figma",
+      "Jira / Trello",
+      "Vercel / Netlify",
+      "AWS",
+      "npm",
     ],
   },
 ] as const;
 
 const softSkills = [
   {
+    label: "Teamwork",
+    icon: "Users" as const,
+    desc: "Collaborate effectively across design, engineering, and operations teams",
+  },
+  {
     label: "Problem Solving",
     icon: "Brain" as const,
-    desc: "Break down complex challenges into manageable, testable solutions",
+    desc: "Break complex challenges into clear, testable solutions",
   },
   {
     label: "Communication",
     icon: "MessageSquare" as const,
-    desc: "Clear technical communication across design, product, and engineering",
+    desc: "Clear communication across teams, vendors, and stakeholders",
   },
   {
-    label: "Time Management",
+    label: "Cross-functional Coordination",
+    icon: "Target" as const,
+    desc: "Coordinate schedules, resources, and delivery across functions",
+  },
+  {
+    label: "Inventory Management",
     icon: "Clock" as const,
-    desc: "Prioritize effectively, deliver iteratively, meet deadlines reliably",
+    desc: "Managed logistics, resources, and inventory for large-scale events",
   },
   {
     label: "Leadership",
-    icon: "Target" as const,
-    desc: "Mentored junior developers, led lab sessions (50+ students), organized 1000+ attendee events",
-  },
-  {
-    label: "Adaptability",
     icon: "Lightbulb" as const,
-    desc: "Quick learner — picked up Vue/Nuxt in 2 weeks for RUKUN internship project",
-  },
-  {
-    label: "Collaboration",
-    icon: "Users" as const,
-    desc: "Cross-functional teamwork: designers, PMs, QA, backend, stakeholders",
+    desc: "Mentored students as a lab assistant and led event operations",
   },
 ] as const;
 
 const languages = [
   { name: "Indonesian", level: "Native", icon: "Globe" as const },
-  { name: "English", level: "Professional (TOEFL 550+)", icon: "Globe" as const },
-  { name: "Javanese", level: "Conversational", icon: "Globe" as const },
+  { name: "English", level: "Professional", icon: "Globe" as const },
 ] as const;
 
 export default function Skills() {
@@ -231,9 +249,9 @@ export default function Skills() {
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? "show" : "hidden"}
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-4"
+          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
           role="list"
-          aria-label="Frontend"
+          aria-label="Technical skills"
         >
           {technicalSkills.map((category, i) => {
             const CategoryIcon = iconMap[category.icon];

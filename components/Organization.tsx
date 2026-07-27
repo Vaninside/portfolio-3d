@@ -55,11 +55,11 @@ const orgs = [
     color: "text-primary",
     bgColor: "bg-primary/10",
     borderColor: "border-primary/20",
-    highlight: "1000+ attendees",
+    highlight: "1000+ mahasiswa baru",
   },
   {
     title: "Staff Sponsorship",
-    event: "TUPE E-Sport Event",
+    event: "TUPEC E-Sport Event",
     org: "UKM Esport Telkom University Purwokerto",
     period: "Sep 2025 - Nov 2025",
     points: [
@@ -71,7 +71,7 @@ const orgs = [
     color: "text-primary",
     bgColor: "bg-primary/10",
     borderColor: "border-primary/20",
-    highlight: "4 tier packages",
+    highlight: "100+ peserta",
   },
 ] as const;
 
