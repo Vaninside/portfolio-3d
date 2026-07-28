@@ -88,15 +88,11 @@ export function useTypewriter({
   startDelayMs = 400,
   reducedMotion = false,
 }: UseTypewriterOptions): { text: string } {
-  const [text, setText] = useState("");
+  const [typed, setTyped] = useState("");
 
   useEffect(() => {
-    if (words.length === 0) {
-      setText("");
-      return;
-    }
-    if (reducedMotion) {
-      setText(words[0]);
+    // Static cases (no words / reduced motion) are derived below — no timers.
+    if (words.length === 0 || reducedMotion) {
       return;
     }
 
@@ -110,7 +106,7 @@ export function useTypewriter({
 
       if (phase === "typing") {
         charCount++;
-        setText(current.slice(0, charCount));
+        setTyped(current.slice(0, charCount));
         if (charCount === current.length) {
           phase = "pausing";
           timer = setTimeout(tick, pauseMs);
@@ -122,7 +118,7 @@ export function useTypewriter({
         timer = setTimeout(tick, deleteSpeedMs);
       } else {
         charCount--;
-        setText(current.slice(0, charCount));
+        setTyped(current.slice(0, charCount));
         if (charCount === 0) {
           wordIndex = (wordIndex + 1) % words.length;
           phase = "typing";
@@ -138,11 +134,14 @@ export function useTypewriter({
     return () => clearTimeout(timer);
   }, [words, typeSpeedMs, deleteSpeedMs, pauseMs, startDelayMs, reducedMotion]);
 
+  // Derive visible text: static for empty/reduced-motion, animated otherwise.
+  const text = words.length === 0 ? "" : reducedMotion ? words[0] : typed;
+
   return { text };
 }
 ```
 
-Note: `words` is in the dependency array, so callers MUST pass a stable reference (a module-level constant or a `useMemo`'d array) or the effect will restart every render. Task 3 uses a module-level constant, satisfying this.
+Note: `words` is in the dependency array, so callers MUST pass a stable reference (a module-level constant or a `useMemo`'d array) or the effect will restart every render. Task 3 uses a module-level constant, satisfying this. The static cases (empty / reduced-motion) are **derived** from `words` rather than pushed via `setState` inside the effect — this avoids React 19's `react-hooks/set-state-in-effect` lint error while keeping identical behavior.
 
 - [ ] **Step 2: Type-check**
 
