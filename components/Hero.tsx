@@ -6,6 +6,7 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
 import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
 import { MatrixText } from "@/components/ui/MatrixText";
+import { Typewriter } from "@/components/ui/Typewriter";
 
 import {
   springConfig,
@@ -24,6 +25,8 @@ const heroItemVariantsFast: Variants = {
   hidden: { opacity: 0, y: 12 },
   show: { opacity: 1, y: 0, transition: springConfig.micro },
 };
+
+const TYPEWRITER_WORDS = ["websites", "webapps", "ui/ux", "things"];
 
 export default function Hero() {
   const reducedMotion = useReducedMotion();
@@ -145,12 +148,13 @@ export default function Hero() {
           </div>
         </motion.h1>
 
-        {/* Subtitle - staggered */}
+        {/* Tagline - typewriter rotating words */}
         <motion.p
           variants={itemVariants}
           className="mt-6 text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed text-balance"
         >
-          "Frontend developer & problem solver. Passionate about building clean, performant web experiences that make a difference."
+          I design and develop{" "}
+          <Typewriter words={TYPEWRITER_WORDS} />
         </motion.p>
 
         {/* CTA Buttons - staggered with spring hover/tap */}
