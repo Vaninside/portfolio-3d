@@ -134,7 +134,7 @@ export default function Education() {
             Education
           </span>
           <h2 id="education-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            My academic background
+            My Academic <span className="text-primary">Background</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Foundation built on rigorous coursework, research, and continuous learning

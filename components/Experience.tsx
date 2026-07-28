@@ -91,7 +91,7 @@ export default function Experience() {
             Experience
           </span>
           <h2 id="experience-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            My professional journey so far
+            My Professional <span className="text-primary">Journey</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Building real-world products and mentoring the next generation

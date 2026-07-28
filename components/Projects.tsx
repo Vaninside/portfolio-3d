@@ -40,7 +40,7 @@ const projects = [
       "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
       "Configured state management and route middleware for secure multi-level authentication flows."
     ],
-    links: { demo: "#", github: "#" },
+    links: { demo: "#", github: "https://github.com/rukun-dev/Rukun" },
     color: "from-blue-500 via-cyan-500 to-blue-600",
     icon: "Globe"
   },
@@ -54,7 +54,7 @@ const projects = [
       "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
       "Documented system anomalies and collaborated with the development team to resolve critical bugs."
     ],
-    links: { demo: "#", github: "#" },
+    links: { demo: "#", github: "https://github.com/rvnkrwn-dev/PUSON" },
     color: "from-emerald-500 via-teal-500 to-emerald-600",
     icon: "Shield"
   },
@@ -236,7 +236,7 @@ export default function Projects() {
             Projects
           </span>
           <h2 id="projects-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            Selected work I've built
+            My <span className="text-primary">Project</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Real-world applications built with modern tech stacks

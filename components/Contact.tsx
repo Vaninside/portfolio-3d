@@ -7,7 +7,6 @@ import {
   Mail,
   Send,
   MapPin,
-  Phone,
   Clock,
   ArrowRight,
   CheckCircle,
@@ -85,7 +84,6 @@ function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
 type IconName = keyof typeof iconMap;
 const iconMap = {
   Mail,
-  Phone,
   MapPin,
   Clock,
   GitBranch,
@@ -101,13 +99,6 @@ const contactInfo = [
     icon: "Mail",
     href: "mailto:evanrafif45@gmail.com",
     description: "Primary contact for opportunities",
-  },
-  {
-    label: "Phone",
-    value: "+62 823-2543-9854",
-    icon: "Phone",
-    href: "tel:+6282325439854",
-    description: "WhatsApp / Call available",
   },
   {
     label: "Location",
