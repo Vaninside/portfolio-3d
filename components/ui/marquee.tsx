@@ -13,6 +13,8 @@ export interface MarqueeProps {
   className?: string;
   /** Accessible label for the scrolling region. */
   ariaLabel?: string;
+  /** Scroll direction. Default "left". */
+  direction?: "left" | "right";
 }
 
 /**
@@ -28,6 +30,7 @@ export function Marquee({
   pauseOnHover = true,
   className,
   ariaLabel,
+  direction = "left",
 }: MarqueeProps) {
   return (
     <div
@@ -36,7 +39,11 @@ export function Marquee({
       aria-label={ariaLabel}
     >
       <div
-        className={cn("marquee-track flex w-max", pauseOnHover && "marquee-pausable")}
+        className={cn(
+          "marquee-track flex w-max",
+          pauseOnHover && "marquee-pausable",
+          direction === "right" && "marquee-reverse"
+        )}
         style={{ "--marquee-duration": `${speedSeconds}s` } as React.CSSProperties}
       >
         <div className="flex shrink-0">{children}</div>
@@ -64,6 +71,9 @@ export function Marquee({
         }
         .marquee-track {
           animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
+        }
+        .marquee-reverse {
+          animation-direction: reverse;
         }
         .marquee-pausable:hover {
           animation-play-state: paused;

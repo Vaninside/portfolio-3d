@@ -90,7 +90,10 @@ export function Marquee({
       role="region"
       aria-label={ariaLabel}
     >
-      <div className={cn("marquee-track flex w-max", pauseOnHover && "marquee-pausable")}>
+      <div
+        className={cn("marquee-track flex w-max", pauseOnHover && "marquee-pausable")}
+        style={{ "--marquee-duration": `${speedSeconds}s` } as React.CSSProperties}
+      >
         <div className="flex shrink-0">{children}</div>
         <div className="flex shrink-0" aria-hidden="true">
           {children}
@@ -115,7 +118,7 @@ export function Marquee({
           );
         }
         .marquee-track {
-          animation: marquee-scroll ${speedSeconds}s linear infinite;
+          animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
         }
         .marquee-pausable:hover {
           animation-play-state: paused;
@@ -139,7 +142,7 @@ export function Marquee({
 }
 ```
 
-Note: the track is two identical halves each `shrink-0`; at `-50%` the first half has fully exited and the second sits exactly where the first began → seamless. `w-max` lets the track exceed the viewport. The template literal `${speedSeconds}s` is interpolated by styled-jsx at render.
+Note: the track is two identical halves each `shrink-0`; at `-50%` the first half has fully exited and the second sits exactly where the first began → seamless. `w-max` lets the track exceed the viewport. The duration is passed as the CSS custom property `--marquee-duration` via inline `style` and read with `var()` — do NOT interpolate `${speedSeconds}` directly inside the `<style jsx>` `animation` shorthand: styled-jsx mangles a dynamic token in a shorthand to `animation: auto ... 0s` (duration 0 → no motion). The custom-property approach keeps the stylesheet static and works.
 
 - [ ] **Step 2: Type-check**
 
