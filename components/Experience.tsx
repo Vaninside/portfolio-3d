@@ -72,7 +72,7 @@ export default function Experience() {
     <section
       ref={sectionRef}
       id="experience"
-      className="py-24 px-6 md:py-32 bg-muted/30"
+      className="py-24 px-6 md:py-32"
       aria-labelledby="experience-heading"
     >
       <div className="mx-auto max-w-5xl">

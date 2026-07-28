@@ -288,7 +288,7 @@ export default function Contact() {
     <section
       ref={ref}
       id="contact"
-      className="py-24 px-6 md:py-32 bg-muted/30"
+      className="py-24 px-6 md:py-32"
       aria-labelledby="contact-heading"
     >
       <div className="mx-auto max-w-5xl">

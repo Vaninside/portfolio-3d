@@ -217,7 +217,7 @@ export default function Projects() {
     <section
       ref={sectionRef}
       id="projects"
-      className="py-24 px-6 md:py-32 bg-muted/30"
+      className="py-24 px-6 md:py-32"
       aria-labelledby="projects-heading"
     >
       <div className="mx-auto max-w-5xl">
