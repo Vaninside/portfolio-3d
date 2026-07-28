@@ -40,7 +40,7 @@ export function Typewriter({
 
   return (
     <span className={cn("text-primary font-semibold", className)}>
-      <span aria-hidden="true">{text}</span>
+      <span aria-hidden="true" suppressHydrationWarning>{text}</span>
       <span
         className={cn("typewriter-cursor", reducedMotion && "typewriter-cursor--static")}
         aria-hidden="true"
