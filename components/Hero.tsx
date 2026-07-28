@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { ArrowRight, Download } from "lucide-react";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { animateBadgePulse } from "@/lib/micro-interactions";
-import { useCursorFollower, useMagneticHover } from "@/hooks/use-cursor-effects";
+import { useMagneticHover } from "@/hooks/use-cursor-effects";
 import { MatrixText } from "@/components/ui/MatrixText";
 import { Typewriter } from "@/components/ui/Typewriter";
 
@@ -33,7 +33,6 @@ export default function Hero() {
   const badgeRef = useRef<HTMLParagraphElement>(null);
 
   // Initialize cursor effects
-  useCursorFollower({ color: "#6366f1", size: 10, trailLength: 4 });
   useMagneticHover(".magnetic", { strength: 0.25, distance: 80 });
 
   // Start badge pulse animation after mount
@@ -118,7 +117,7 @@ export default function Hero() {
           variants={itemVariants}
           className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight leading-[1.05] text-balance"
         >
-          <div className="flex flex-col leading-[1.0]">
+          <div className="flex flex-col leading-[0.9]">
             <MatrixText
               text="Evan Rafif"
               className="block"
@@ -134,7 +133,7 @@ export default function Hero() {
             />
             <MatrixText
               text="Pradana"
-              className="block -mt-1"
+              className="block -mt-2 text-primary"
               fontSize="text-4xl sm:text-6xl md:text-7xl lg:text-8xl"
               fontWeight="font-bold"
               fontFamily=""

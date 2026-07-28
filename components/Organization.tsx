@@ -109,7 +109,7 @@ export default function Organization() {
             {orgLabels.experience}
           </span>
           <h2 id="organization-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            Organization & Leadership
+            Organization <span className="text-primary">&amp; Leadership</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             {orgLabels.leading}

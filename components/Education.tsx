@@ -10,6 +10,7 @@ import {
   containerVariants,
   headerVariants,
 } from "@/lib/animations";
+import { Marquee } from "@/components/ui/marquee";
 
 const iconMap = {
   GraduationCap,
@@ -82,6 +83,26 @@ const certVariants: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: springEase } },
 };
 
+function CertCard({ cert }: { cert: (typeof CERTIFICATIONS)[number] }) {
+  const CertIcon = iconMap[cert.icon as keyof typeof iconMap];
+  return (
+    <motion.div
+      variants={certVariants}
+      className="group w-72 shrink-0 p-5 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+      whileHover={{ y: -2 }}
+    >
+      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+        <CertIcon className="size-6" aria-hidden="true" />
+      </div>
+      <h4 className="font-semibold text-foreground text-sm leading-snug group-hover:text-primary transition-colors">
+        {cert.name}
+      </h4>
+      <p className="text-xs text-muted-foreground mt-1">{cert.issuer}</p>
+      <p className="text-xs text-muted-foreground/70 mt-0.5">{cert.year}</p>
+    </motion.div>
+  );
+}
+
 export default function Education() {
   const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -113,7 +134,7 @@ export default function Education() {
             Education
           </span>
           <h2 id="education-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            My academic background
+            My Academic <span className="text-primary">Background</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Foundation built on rigorous coursework, research, and continuous learning
@@ -235,31 +256,32 @@ export default function Education() {
             <p className="text-muted-foreground mt-2">{EDU_LABELS.continuousLearning}</p>
           </div>
 
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "show" : "hidden"}
-            className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4"
-          >
-            {CERTIFICATIONS.map((cert) => {
-              const CertIcon = iconMap[cert.icon as keyof typeof iconMap];
-              return (
-                <motion.div
-                  key={cert.name}
-                  variants={certVariants}
-                  className="group p-5 rounded-xl bg-card border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
-                  whileHover={{ y: -2 }}
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                    <CertIcon className="size-6" aria-hidden="true" />
-                  </div>
-                  <h4 className="font-semibold text-foreground text-sm leading-snug group-hover:text-primary transition-colors">{cert.name}</h4>
-                  <p className="text-xs text-muted-foreground mt-1">{cert.issuer}</p>
-                  <p className="text-xs text-muted-foreground/70 mt-0.5">{cert.year}</p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
+          {reducedMotion ? (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 justify-items-center"
+            >
+              {CERTIFICATIONS.map((cert) => (
+                <CertCard key={cert.name} cert={cert} />
+              ))}
+            </motion.div>
+          ) : (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+            >
+              <Marquee speedSeconds={30} pauseOnHover ariaLabel="Certifications" className="py-2">
+                <div className="flex gap-4 pr-4">
+                  {CERTIFICATIONS.map((cert) => (
+                    <CertCard key={cert.name} cert={cert} />
+                  ))}
+                </div>
+              </Marquee>
+            </motion.div>
+          )}
         </motion.div>
       </div>
     </section>

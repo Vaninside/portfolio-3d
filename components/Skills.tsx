@@ -3,6 +3,8 @@
 import { motion, useInView, useReducedMotion, type Variants } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
+import { Marquee } from "@/components/ui/marquee";
+import { getSkillIcon } from "@/lib/skill-icons";
 import {
   Code,
   Database,
@@ -22,7 +24,6 @@ import {
   springEase,
   springConfig,
   containerVariants,
-  itemVariants,
   headerVariants,
 } from "@/lib/animations";
 import {
@@ -237,32 +238,30 @@ export default function Skills() {
             Skills
           </span>
           <h2 id="skills-heading" className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-[1.05] text-balance">
-            Technologies I work with and competencies I bring to every team
+            Tech <span className="text-primary">Stack</span>
           </h2>
           <p className="mt-4 text-lg text-muted-foreground">
             Technologies I work with and competencies I bring to every team
           </p>
         </motion.div>
 
-        {/* Technical Skills Grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "show" : "hidden"}
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
-          role="list"
-          aria-label="Technical skills"
-        >
-          {technicalSkills.map((category, i) => {
-            const CategoryIcon = iconMap[category.icon];
-            return (
-              <motion.article
-                key={category.category}
-                ref={(el) => { skillCardRefs.current[i] = el; }}
-                variants={itemVariants.standard}
-                className="group relative rounded-2xl bg-card border border-border p-6 md:p-8 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 overflow-hidden"
-                whileHover={{ y: -4 }}
-              >
+        {/* Technical Skills Marquee (2 rows, opposite directions) */}
+        <div role="list" aria-label="Technical skills">
+          <Marquee
+            speedSeconds={45}
+            pauseOnHover
+            direction="right"
+            ariaLabel="Technical skills"
+            className="py-2"
+          >
+            <div className="flex gap-6 pr-6">
+              {technicalSkills.map((category) => {
+                const CategoryIcon = iconMap[category.icon];
+                return (
+                  <article
+                    key={category.category}
+                    className="group relative w-80 shrink-0 rounded-2xl bg-card border border-border p-6 md:p-8 hover:border-primary/30 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 overflow-hidden"
+                  >
                 {/* Gradient top border */}
                 <div
                   className="absolute top-0 left-0 right-0 h-1 rounded-t-2xl"
@@ -294,30 +293,30 @@ export default function Skills() {
                   </div>
 
                   {/* Skills list */}
-                  <motion.ul variants={containerVariants} className="space-y-2.5">
-                    {category.skills.map((skill, j) => (
-                      <motion.li
-                        key={skill}
-                        variants={itemVariants}
-                        className="flex items-center gap-2 text-sm text-muted-foreground leading-relaxed"
-                      >
-                        <motion.div
-                          className="flex h-5 w-5 shrink-0 items-center justify-center"
-                          animate={{ scale: [1, 1.1, 1] }}
-                          transition={{ duration: 1.5, repeat: Infinity, delay: j * 0.1 }}
+                  <ul className="space-y-2.5">
+                    {category.skills.map((skill) => {
+                      const SkillIcon = getSkillIcon(skill);
+                      return (
+                        <li
+                          key={skill}
+                          className="flex items-center justify-between gap-2 text-sm text-muted-foreground leading-relaxed"
                         >
-                          <div className="relative size-5 rounded-full border border-primary/30" />
-                          <motion.div className="absolute size-1.5 rounded-full bg-primary" animate={{ scale: [1.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, delay: j * 0.1 }} />
-                        </motion.div>
-                        <span className="group-hover:text-foreground transition-colors">{skill}</span>
-                      </motion.li>
-                    ))}
-                  </motion.ul>
+                          <span className="flex items-center gap-2 min-w-0">
+                            <span className="flex h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
+                            <span className="group-hover:text-foreground transition-colors truncate">{skill}</span>
+                          </span>
+                          <SkillIcon className="size-4 shrink-0 text-muted-foreground/70 group-hover:text-primary transition-colors" aria-hidden="true" />
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </div>
-              </motion.article>
-            );
-          })}
-        </motion.div>
+              </article>
+                  );
+                })}
+              </div>
+            </Marquee>
+        </div>
 
         {/* Soft Skills */}
         <motion.div
@@ -328,8 +327,8 @@ export default function Skills() {
           className="mt-16 md:mt-20"
         >
           <div className="text-center max-w-2xl mx-auto mb-10">
-            <h3 className="text-2xl sm:text-3xl font-bold tracking-tight mb-3">
-              Soft Skills
+            <h3 className="text-3xl sm:text-4xl font-bold tracking-tight mb-3">
+              Soft <span className="text-primary">Skills</span>
             </h3>
             <p className="text-muted-foreground">
               Complementary competencies that make collaboration effective
