@@ -35,7 +35,10 @@ export function Marquee({
       role="region"
       aria-label={ariaLabel}
     >
-      <div className={cn("marquee-track flex w-max", pauseOnHover && "marquee-pausable")}>
+      <div
+        className={cn("marquee-track flex w-max", pauseOnHover && "marquee-pausable")}
+        style={{ "--marquee-duration": `${speedSeconds}s` } as React.CSSProperties}
+      >
         <div className="flex shrink-0">{children}</div>
         <div className="flex shrink-0" aria-hidden="true">
           {children}
@@ -60,7 +63,7 @@ export function Marquee({
           );
         }
         .marquee-track {
-          animation: marquee-scroll ${speedSeconds}s linear infinite;
+          animation: marquee-scroll var(--marquee-duration, 30s) linear infinite;
         }
         .marquee-pausable:hover {
           animation-play-state: paused;
