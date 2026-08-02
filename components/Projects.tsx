@@ -2,6 +2,7 @@
 
 import { motion, useInView, useMotionValue, useTransform, type Variants } from "framer-motion";
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe } from "lucide-react";
 import {
@@ -95,6 +96,33 @@ const projects = [
     demoAvailable: false,
   },
 ] as const;
+
+function ProjectScreenshot({ project }: { project: ProjectItem }) {
+  if (!project.image) return null;
+
+  const demoAvailable = project.demoAvailable !== false;
+  const hint = demoAvailable ? "↗ View live demo" : "↗ View screenshot";
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-10 rounded-2xl overflow-hidden opacity-0 scale-105 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:scale-100 motion-reduce:scale-100 motion-reduce:transition-opacity [@media(hover:none)]:static [@media(hover:none)]:opacity-100 [@media(hover:none)]:scale-100 [@media(hover:none)]:h-40 [@media(hover:none)]:mb-4"
+    >
+      <Image
+        src={project.image}
+        alt={`${project.title} dashboard screenshot`}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover object-top"
+      />
+      <div className="absolute inset-0 bg-black/40 [@media(hover:none)]:bg-black/10" />
+      <span className="absolute inset-0 hidden items-center justify-center group-hover:flex [@media(hover:none)]:hidden">
+        <span className="px-4 py-2 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
+          {hint}
+        </span>
+      </span>
+    </div>
+  );
+}
 
 function ProjectActions({ project }: { project: ProjectItem }) {
   const demoAvailable = project.demoAvailable !== false;
@@ -220,6 +248,7 @@ export default function Projects() {
 
         {/* Card */}
         <Card className="relative h-full flex flex-col bg-card/80 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-2xl transition-all duration-300 overflow-hidden">
+          <ProjectScreenshot project={project} />
           {/* Gradient top border */}
           <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, ${project.color.replace("from-", "").replace("via-", "").replace("to-", "")})` }} aria-hidden="true" />
 

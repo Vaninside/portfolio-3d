@@ -64,4 +64,21 @@ describe("Projects", () => {
       within(card).getByRole("link", { name: /view demo/i }),
     ).toBeInTheDocument();
   });
+
+  it("renders a screenshot image for cards that have one", () => {
+    render(<Projects />);
+    const card = cardFor("StockFlow");
+    const img = within(card).getByRole("img", {
+      name: /stockflow dashboard screenshot/i,
+    });
+    expect(img).toHaveAttribute("src", "/stock-flow.webp");
+  });
+
+  it("uses a screenshot hint even when the live demo is offline", () => {
+    render(<Projects />);
+    const card = cardFor("RUKUN");
+    expect(
+      within(card).getByRole("img", { name: /rukun dashboard screenshot/i }),
+    ).toHaveAttribute("src", "/rukun.webp");
+  });
 });
