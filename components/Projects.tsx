@@ -27,41 +27,30 @@ type ProjectItem = {
   links: { demo: string; github: string };
   color: string;
   icon: keyof typeof iconMap;
+  image?: string;
+  demoAvailable?: boolean;
 };
 
 const projects = [
   {
-    title: "RUKUN",
-    description: "Internship Project at PT Cazh Teknologi Inovasi",
-    period: "May 2025 - July 2025",
-    tech: ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+    title: "StockFlow",
+    description: "Multi-Location Inventory Management — Fullstack Portfolio Project",
+    period: "July 2026 - Present",
+    tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
     points: [
-      "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
-      "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
-      "Configured state management and route middleware for secure multi-level authentication flows."
+      "Built a fullstack monorepo with a NestJS REST API and Next.js 15 frontend, sharing types across the workspace.",
+      "Implemented JWT auth with refresh tokens and role-based access (Admin/Staff) enforced server-side.",
+      "Designed atomic cross-location stock transfers with an append-only, immutable audit trail.",
     ],
-    links: { demo: "#", github: "https://github.com/rukun-dev/Rukun" },
-    color: "from-blue-500 via-cyan-500 to-blue-600",
-    icon: "Globe"
-  },
-  {
-    title: "PUSON",
-    description: "Posyandu untuk Stunting Online — Academic Project",
-    period: "March 2025 - Sep 2025",
-    tech: ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
-    points: [
-      "Developed and executed comprehensive test plans and test cases to identify software defects.",
-      "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
-      "Documented system anomalies and collaborated with the development team to resolve critical bugs."
-    ],
-    links: { demo: "#", github: "https://github.com/rvnkrwn-dev/PUSON" },
-    color: "from-emerald-500 via-teal-500 to-emerald-600",
-    icon: "Shield"
+    links: { demo: "https://stock-flow-web-iota.vercel.app/", github: "https://github.com/Vaninside/Stock-flow" },
+    color: "from-indigo-500 via-blue-500 to-cyan-500",
+    icon: "Globe",
+    image: "/stock-flow.webp",
   },
   {
     title: "Portfolio 3D",
     description: "Personal Portfolio — Next.js & Framer Motion",
-    period: "July 2025 - Present",
+    period: "July 2026 - Present",
     tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS"],
     points: [
       "Built an interactive particle-network canvas hero background reactive to the cursor.",
@@ -71,6 +60,39 @@ const projects = [
     links: { demo: "#", github: "https://github.com/vaninside/portfolio-3d" },
     color: "from-violet-500 via-purple-500 to-pink-500",
     icon: "Layers",
+    image: "/porto.webp",
+  },
+  {
+    title: "RUKUN",
+    description: "Internship Project at PT Cazh Teknologi Inovasi",
+    period: "May 2025 - July 2025",
+    tech: ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+    points: [
+      "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
+      "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
+      "Configured state management and route middleware for secure multi-level authentication flows.",
+    ],
+    links: { demo: "#", github: "https://github.com/rukun-dev/Rukun" },
+    color: "from-blue-500 via-cyan-500 to-blue-600",
+    icon: "Globe",
+    image: "/rukun.webp",
+    demoAvailable: false,
+  },
+  {
+    title: "PUSON",
+    description: "Posyandu untuk Stunting Online — Academic Project",
+    period: "March 2025 - Sep 2025",
+    tech: ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
+    points: [
+      "Developed and executed comprehensive test plans and test cases to identify software defects.",
+      "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
+      "Documented system anomalies and collaborated with the development team to resolve critical bugs.",
+    ],
+    links: { demo: "#", github: "https://github.com/rvnkrwn-dev/PUSON" },
+    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    icon: "Shield",
+    image: "/puson.webp",
+    demoAvailable: false,
   },
 ] as const;
 
