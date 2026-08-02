@@ -2,6 +2,7 @@
 
 import { motion, useInView, useMotionValue, useTransform, type Variants } from "framer-motion";
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe } from "lucide-react";
 import {
@@ -27,41 +28,30 @@ type ProjectItem = {
   links: { demo: string; github: string };
   color: string;
   icon: keyof typeof iconMap;
+  image?: string;
+  demoAvailable?: boolean;
 };
 
 const projects = [
   {
-    title: "RUKUN",
-    description: "Internship Project at PT Cazh Teknologi Inovasi",
-    period: "May 2025 - July 2025",
-    tech: ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+    title: "StockFlow",
+    description: "Multi-Location Inventory Management — Fullstack Portfolio Project",
+    period: "July 2026 - Present",
+    tech: ["Next.js", "NestJS", "PostgreSQL", "Prisma", "TypeScript"],
     points: [
-      "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
-      "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
-      "Configured state management and route middleware for secure multi-level authentication flows."
+      "Built a fullstack monorepo with a NestJS REST API and Next.js 15 frontend, sharing types across the workspace.",
+      "Implemented JWT auth with refresh tokens and role-based access (Admin/Staff) enforced server-side.",
+      "Designed atomic cross-location stock transfers with an append-only, immutable audit trail.",
     ],
-    links: { demo: "#", github: "https://github.com/rukun-dev/Rukun" },
-    color: "from-blue-500 via-cyan-500 to-blue-600",
-    icon: "Globe"
-  },
-  {
-    title: "PUSON",
-    description: "Posyandu untuk Stunting Online — Academic Project",
-    period: "March 2025 - Sep 2025",
-    tech: ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
-    points: [
-      "Developed and executed comprehensive test plans and test cases to identify software defects.",
-      "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
-      "Documented system anomalies and collaborated with the development team to resolve critical bugs."
-    ],
-    links: { demo: "#", github: "https://github.com/rvnkrwn-dev/PUSON" },
-    color: "from-emerald-500 via-teal-500 to-emerald-600",
-    icon: "Shield"
+    links: { demo: "https://stock-flow-web-iota.vercel.app/", github: "https://github.com/Vaninside/Stock-flow" },
+    color: "from-indigo-500 via-blue-500 to-cyan-500",
+    icon: "Globe",
+    image: "/stock-flow.webp",
   },
   {
     title: "Portfolio 3D",
     description: "Personal Portfolio — Next.js & Framer Motion",
-    period: "July 2025 - Present",
+    period: "July 2026 - Present",
     tech: ["Next.js", "React", "TypeScript", "Framer Motion", "Tailwind CSS"],
     points: [
       "Built an interactive particle-network canvas hero background reactive to the cursor.",
@@ -71,8 +61,98 @@ const projects = [
     links: { demo: "#", github: "https://github.com/vaninside/portfolio-3d" },
     color: "from-violet-500 via-purple-500 to-pink-500",
     icon: "Layers",
+    image: "/porto.webp",
+  },
+  {
+    title: "RUKUN",
+    description: "Internship Project at PT Cazh Teknologi Inovasi",
+    period: "May 2025 - July 2025",
+    tech: ["Vue.js", "Nuxt.js", "REST API", "Pinia", "Middleware"],
+    points: [
+      "Architected and developed client-side using Vue.js and Nuxt.js with modular components for scalability.",
+      "Integrated complex RESTful APIs to render dynamic data for admin dashboard and user profile management.",
+      "Configured state management and route middleware for secure multi-level authentication flows.",
+    ],
+    links: { demo: "#", github: "https://github.com/rukun-dev/Rukun" },
+    color: "from-blue-500 via-cyan-500 to-blue-600",
+    icon: "Globe",
+    image: "/rukun.webp",
+    demoAvailable: false,
+  },
+  {
+    title: "PUSON",
+    description: "Posyandu untuk Stunting Online — Academic Project",
+    period: "March 2025 - Sep 2025",
+    tech: ["QA Testing", "UI/UX Design", "System Testing", "Bug Tracking", "Jira"],
+    points: [
+      "Developed and executed comprehensive test plans and test cases to identify software defects.",
+      "Conducted rigorous UI/UX and system testing for a seamless stunting monitoring application.",
+      "Documented system anomalies and collaborated with the development team to resolve critical bugs.",
+    ],
+    links: { demo: "#", github: "https://github.com/rvnkrwn-dev/PUSON" },
+    color: "from-emerald-500 via-teal-500 to-emerald-600",
+    icon: "Shield",
+    image: "/puson.webp",
+    demoAvailable: false,
   },
 ] as const;
+
+function ProjectScreenshot({ project }: { project: ProjectItem }) {
+  if (!project.image) return null;
+
+  return (
+    <div
+      className="pointer-events-none absolute inset-0 z-10 rounded-2xl overflow-hidden opacity-0 scale-105 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:scale-100 motion-reduce:scale-100 motion-reduce:transition-opacity [@media(hover:none)]:static [@media(hover:none)]:opacity-100 [@media(hover:none)]:scale-100 [@media(hover:none)]:h-40 [@media(hover:none)]:mb-4"
+    >
+      <Image
+        src={project.image}
+        alt={`${project.title} dashboard screenshot`}
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover object-top"
+      />
+      {/* Scrim: darker toward the bottom so the elevated action buttons stay legible over the screenshot */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30 [@media(hover:none)]:from-black/20 [@media(hover:none)]:via-black/10 [@media(hover:none)]:to-transparent" />
+    </div>
+  );
+}
+
+function ProjectActions({ project }: { project: ProjectItem }) {
+  const demoAvailable = project.demoAvailable !== false;
+
+  return (
+    <div className="flex flex-col gap-3 pt-2 border-t border-border/50">
+      {!demoAvailable && (
+        <p className="flex items-center gap-2 text-xs text-amber-500/90 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2">
+          <span aria-hidden="true">ℹ️</span>
+          Live demo tidak tersedia — database sudah offline.
+        </p>
+      )}
+      <div className="flex items-center gap-3">
+        {demoAvailable && (
+          <a
+            href={project.links.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
+          >
+            <ExternalLink className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            View Demo
+          </a>
+        )}
+        <a
+          href={project.links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300 group"
+        >
+          <GitBranch className="size-4" aria-hidden="true" />
+          {demoAvailable ? "View Code" : "View Source Code"}
+        </a>
+      </div>
+    </div>
+  );
+}
 
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -133,6 +213,7 @@ export default function Projects() {
     return (
       <motion.div
         ref={ref}
+        data-project-card
         variants={cardVariants}
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
@@ -160,6 +241,7 @@ export default function Projects() {
 
         {/* Card */}
         <Card className="relative h-full flex flex-col bg-card/80 backdrop-blur-sm border-border/50 hover:border-primary/30 hover:shadow-2xl transition-all duration-300 overflow-hidden">
+          <ProjectScreenshot project={project} />
           {/* Gradient top border */}
           <div className="absolute top-0 left-0 right-0 h-1" style={{ background: `linear-gradient(90deg, ${project.color.replace("from-", "").replace("via-", "").replace("to-", "")})` }} aria-hidden="true" />
 
@@ -197,15 +279,8 @@ export default function Projects() {
               ))}
             </motion.div>
 
-            <motion.div variants={contentVariants} className="flex items-center gap-3 pt-2 border-t border-border/50">
-              <a href={project.links.demo} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group">
-                <ExternalLink className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-                View Demo
-              </a>
-              <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300 group">
-                <GitBranch className="size-4" aria-hidden="true" />
-                View Code
-              </a>
+            <motion.div variants={contentVariants} className="relative z-20">
+              <ProjectActions project={project} />
             </motion.div>
           </CardContent>
         </Card>
