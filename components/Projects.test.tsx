@@ -74,7 +74,7 @@ describe("Projects", () => {
     expect(img).toHaveAttribute("src", "/stock-flow.webp");
   });
 
-  it("uses a screenshot hint even when the live demo is offline", () => {
+  it("renders the screenshot even when the live demo is offline", () => {
     render(<Projects />);
     const card = cardFor("RUKUN");
     expect(

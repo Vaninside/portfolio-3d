@@ -100,9 +100,6 @@ const projects = [
 function ProjectScreenshot({ project }: { project: ProjectItem }) {
   if (!project.image) return null;
 
-  const demoAvailable = project.demoAvailable !== false;
-  const hint = demoAvailable ? "↗ View live demo" : "↗ View screenshot";
-
   return (
     <div
       className="pointer-events-none absolute inset-0 z-10 rounded-2xl overflow-hidden opacity-0 scale-105 transition-all duration-500 ease-out group-hover:opacity-100 group-hover:scale-100 motion-reduce:scale-100 motion-reduce:transition-opacity [@media(hover:none)]:static [@media(hover:none)]:opacity-100 [@media(hover:none)]:scale-100 [@media(hover:none)]:h-40 [@media(hover:none)]:mb-4"
@@ -114,12 +111,8 @@ function ProjectScreenshot({ project }: { project: ProjectItem }) {
         sizes="(max-width: 768px) 100vw, 50vw"
         className="object-cover object-top"
       />
-      <div className="absolute inset-0 bg-black/40 [@media(hover:none)]:bg-black/10" />
-      <span className="absolute inset-0 hidden items-center justify-center group-hover:flex [@media(hover:none)]:hidden">
-        <span className="px-4 py-2 rounded-full bg-primary/90 text-primary-foreground text-xs font-semibold">
-          {hint}
-        </span>
-      </span>
+      {/* Scrim: darker toward the bottom so the elevated action buttons stay legible over the screenshot */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30 [@media(hover:none)]:from-black/20 [@media(hover:none)]:via-black/10 [@media(hover:none)]:to-transparent" />
     </div>
   );
 }
@@ -286,7 +279,7 @@ export default function Projects() {
               ))}
             </motion.div>
 
-            <motion.div variants={contentVariants}>
+            <motion.div variants={contentVariants} className="relative z-20">
               <ProjectActions project={project} />
             </motion.div>
           </CardContent>
