@@ -96,6 +96,43 @@ const projects = [
   },
 ] as const;
 
+function ProjectActions({ project }: { project: ProjectItem }) {
+  const demoAvailable = project.demoAvailable !== false;
+
+  return (
+    <div className="flex flex-col gap-3 pt-2 border-t border-border/50">
+      {!demoAvailable && (
+        <p className="flex items-center gap-2 text-xs text-amber-500/90 bg-amber-500/10 border border-amber-500/20 rounded-lg px-3 py-2">
+          <span aria-hidden="true">ℹ️</span>
+          Live demo tidak tersedia — database sudah offline.
+        </p>
+      )}
+      <div className="flex items-center gap-3">
+        {demoAvailable && (
+          <a
+            href={project.links.demo}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group"
+          >
+            <ExternalLink className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
+            View Demo
+          </a>
+        )}
+        <a
+          href={project.links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300 group"
+        >
+          <GitBranch className="size-4" aria-hidden="true" />
+          {demoAvailable ? "View Code" : "View Source Code"}
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export default function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-150px" });
@@ -155,6 +192,7 @@ export default function Projects() {
     return (
       <motion.div
         ref={ref}
+        data-project-card
         variants={cardVariants}
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
@@ -219,15 +257,8 @@ export default function Projects() {
               ))}
             </motion.div>
 
-            <motion.div variants={contentVariants} className="flex items-center gap-3 pt-2 border-t border-border/50">
-              <a href={project.links.demo} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-primary-foreground bg-primary hover:opacity-90 hover:shadow-lg hover:shadow-primary/25 transition-all duration-300 group">
-                <ExternalLink className="size-4 group-hover:translate-x-0.5 transition-transform" aria-hidden="true" />
-                View Demo
-              </a>
-              <a href={project.links.github} target="_blank" rel="noopener noreferrer" className="flex-1 inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-semibold border border-border hover:bg-accent/10 hover:border-primary/30 transition-all duration-300 group">
-                <GitBranch className="size-4" aria-hidden="true" />
-                View Code
-              </a>
+            <motion.div variants={contentVariants}>
+              <ProjectActions project={project} />
             </motion.div>
           </CardContent>
         </Card>

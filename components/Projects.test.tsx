@@ -1,6 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import Projects from "@/components/Projects";
+
+function cardFor(title: string): HTMLElement {
+  const heading = screen.getByText(title);
+  const card = heading.closest("[data-project-card]");
+  if (!(card instanceof HTMLElement)) {
+    throw new Error(`card wrapper not found for ${title}`);
+  }
+  return card;
+}
 
 describe("Projects", () => {
   it("renders the section heading", () => {
@@ -36,5 +45,23 @@ describe("Projects", () => {
     expect(
       screen.getAllByRole("link", { name: /view (code|source)/i })[0],
     ).toHaveAttribute("href", "https://github.com/Vaninside/Stock-flow");
+  });
+
+  it("hides the demo button and shows an offline note for RUKUN", () => {
+    render(<Projects />);
+    const card = cardFor("RUKUN");
+    expect(within(card).queryByRole("link", { name: /view demo/i })).toBeNull();
+    expect(within(card).getByText(/database sudah offline/i)).toBeInTheDocument();
+    expect(
+      within(card).getByRole("link", { name: /view source|view code/i }),
+    ).toHaveAttribute("href", "https://github.com/rukun-dev/Rukun");
+  });
+
+  it("shows the demo button for StockFlow (demo available)", () => {
+    render(<Projects />);
+    const card = cardFor("StockFlow");
+    expect(
+      within(card).getByRole("link", { name: /view demo/i }),
+    ).toBeInTheDocument();
   });
 });
