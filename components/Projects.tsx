@@ -1,15 +1,14 @@
 "use client";
 
-import { motion, useInView, useMotionValue, useTransform, type Variants } from "framer-motion";
-import { useRef, useEffect } from "react";
+import { motion, useInView, useMotionValue, useTransform, useReducedMotion, type Variants } from "framer-motion";
+import { useRef, useEffect, useState, useCallback } from "react";
 import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe } from "lucide-react";
+import { ExternalLink, GitBranch, Layers, Zap, Shield, Globe, ChevronLeft, ChevronRight } from "lucide-react";
 import {
   springEase,
   springConfig,
   headerVariants,
-  containerVariants,
 } from "@/lib/animations";
 
 const iconMap = {
@@ -177,7 +176,7 @@ export default function Projects() {
   const headerVariantsLocal = headerVariants.standard;
 
   // 3D Tilt Card Component
-  function ProjectCard({ project, index, isInView }: { project: ProjectItem; index: number; isInView: boolean }) {
+  function ProjectCard({ project, index, isInView, isActive }: { project: ProjectItem; index: number; isInView: boolean; isActive: boolean }) {
     const ref = useRef<HTMLDivElement>(null);
     const x = useMotionValue(0);
     const y = useMotionValue(0);
@@ -229,6 +228,7 @@ export default function Projects() {
       <motion.div
         ref={ref}
         data-project-card
+        data-active={isActive}
         variants={cardVariants}
         initial="hidden"
         animate={isInView ? "show" : "hidden"}
@@ -333,20 +333,147 @@ export default function Projects() {
           </p>
         </motion.div>
 
-        {/* Projects grid */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "show" : "hidden"}
-          className="grid gap-8 md:grid-cols-2 lg:grid-cols-2"
-          role="list"
-          aria-label="Projects"
-        >
-          {projects.map((project, i) => (
-            <ProjectCard key={project.title} project={project} index={i} isInView={isInView} />
-          ))}
-        </motion.div>
+        {/* Projects carousel */}
+        <ProjectsCarousel isInView={isInView} ProjectCard={ProjectCard} />
       </div>
     </section>
   );
+
+  // Carousel: 1 card per view on mobile, 2 on desktop (md+). Navigable with
+  // left/right controls + arrow keys; slides one card at a time.
+  function ProjectsCarousel({
+    isInView,
+    ProjectCard,
+  }: {
+    isInView: boolean;
+    ProjectCard: (props: { project: ProjectItem; index: number; isInView: boolean; isActive: boolean }) => React.ReactNode;
+  }) {
+    const [active, setActive] = useState(0);
+    const [perView, setPerView] = useState(1);
+    const reducedMotion = useReducedMotion();
+
+    // Track viewport size → cards per view (1 mobile, 2 on md+ / ≥768px).
+    useEffect(() => {
+      const query = window.matchMedia("(min-width: 768px)");
+      const update = () => setPerView(query.matches ? 2 : 1);
+      update();
+      query.addEventListener("change", update);
+      return () => query.removeEventListener("change", update);
+    }, []);
+
+    const maxIndex = Math.max(projects.length - perView, 0);
+
+    // Clamp the active index if perView grows (e.g. resize to desktop near the end).
+    useEffect(() => {
+      setActive((i) => Math.min(i, maxIndex));
+    }, [maxIndex]);
+
+    // Looping carousel: wrap around across the available scroll positions.
+    const positionCount = maxIndex + 1;
+    const prev = useCallback(
+      () => setActive((i) => (i - 1 + positionCount) % positionCount),
+      [positionCount],
+    );
+    const next = useCallback(
+      () => setActive((i) => (i + 1) % positionCount),
+      [positionCount],
+    );
+
+    const handleKeyDown = useCallback(
+      (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          prev();
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          next();
+        }
+      },
+      [prev, next],
+    );
+
+    // Step the track by one card's width so navigation moves a single card.
+    const stepPercent = 100 / perView;
+    // A card is "active" (visible) when it falls inside the current window.
+    const isVisible = (i: number) => i >= active && i < active + perView;
+
+    return (
+      <div className="relative">
+        {/* Viewport */}
+        <div
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="Projects carousel"
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+          className="overflow-hidden rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40"
+        >
+          <motion.div
+            className="flex"
+            animate={{ x: `-${active * stepPercent}%` }}
+            transition={reducedMotion ? { duration: 0 } : springConfig.standard}
+          >
+            {projects.map((project, i) => (
+              <div
+                key={project.title}
+                role="group"
+                aria-roledescription="slide"
+                aria-label={`${i + 1} of ${projects.length}`}
+                aria-hidden={!isVisible(i)}
+                className="w-full md:w-1/2 shrink-0 px-1 py-2"
+              >
+                <div className="mx-auto max-w-md">
+                  <ProjectCard project={project} index={i} isInView={isInView} isActive={isVisible(i)} />
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        {/* Controls */}
+        <div className="mt-8 flex items-center justify-center gap-4">
+          <button
+            type="button"
+            onClick={prev}
+            aria-label="Previous project"
+            className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur-sm text-foreground transition-all duration-300 hover:border-primary/30 hover:bg-accent/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:bg-card/80"
+          >
+            <ChevronLeft className="size-5" aria-hidden="true" />
+          </button>
+
+          {/* Dot indicators — one per scroll position (accounts for cards-per-view) */}
+          <div className="flex items-center gap-2" role="tablist" aria-label="Choose project">
+            {Array.from({ length: maxIndex + 1 }, (_, i) => (
+              <button
+                key={projects[i].title}
+                type="button"
+                role="tab"
+                aria-selected={i === active}
+                aria-label={`Go to ${projects[i].title}`}
+                onClick={() => setActive(i)}
+                className={`h-2 rounded-full transition-all duration-300 ${
+                  i === active ? "w-6 bg-primary" : "w-2 bg-border hover:bg-primary/40"
+                }`}
+              />
+            ))}
+          </div>
+
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next project"
+            className="inline-flex size-11 items-center justify-center rounded-full border border-border bg-card/80 backdrop-blur-sm text-foreground transition-all duration-300 hover:border-primary/30 hover:bg-accent/10 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:border-border disabled:hover:bg-card/80"
+          >
+            <ChevronRight className="size-5" aria-hidden="true" />
+          </button>
+        </div>
+
+        <p className="mt-4 text-center text-sm text-muted-foreground" aria-live="polite">
+          {perView > 1
+            ? `${active + 1}–${Math.min(active + perView, projects.length)} / ${projects.length}`
+            : `${active + 1} / ${projects.length}`}
+        </p>
+      </div>
+    );
+  }
 }
