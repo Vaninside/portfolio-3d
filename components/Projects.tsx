@@ -64,6 +64,21 @@ const projects = [
     image: "/porto.webp",
   },
   {
+    title: "Absensi Karyawan",
+    description: "Employee Attendance App — Face Recognition & GPS",
+    period: "August 2026 - Present",
+    tech: ["React", "TypeScript", "Vite", "Tailwind CSS", "Leaflet"],
+    points: [
+      "Built a fully client-side attendance app with on-device face recognition (face-api) — no backend, all data in localStorage.",
+      "Integrated GPS geotagging with Leaflet maps and reverse-geocoding, plus lateness detection against each employee's start time.",
+      "Delivered a dashboard with daily stats, a 7-day Recharts trend, filterable history, CSV export, and WCAG-AA dark mode.",
+    ],
+    links: { demo: "https://absensi-karyawan-five-liard.vercel.app/", github: "https://github.com/Vaninside/absensi-karyawan" },
+    color: "from-amber-500 via-orange-500 to-rose-500",
+    icon: "Zap",
+    image: "/absensi.webp",
+  },
+  {
     title: "RUKUN",
     description: "Internship Project at PT Cazh Teknologi Inovasi",
     period: "May 2025 - July 2025",

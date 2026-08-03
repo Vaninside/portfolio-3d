@@ -28,11 +28,46 @@ describe("Projects", () => {
     expect(titles[0]).toBe("StockFlow");
   });
 
-  it("renders all four project titles", () => {
+  it("renders all five project titles", () => {
     render(<Projects />);
-    for (const name of ["StockFlow", "Portfolio 3D", "RUKUN", "PUSON"]) {
+    for (const name of [
+      "StockFlow",
+      "Portfolio 3D",
+      "Absensi Karyawan",
+      "RUKUN",
+      "PUSON",
+    ]) {
       expect(screen.getByText(name)).toBeInTheDocument();
     }
+  });
+
+  it("renders Absensi Karyawan as the third project card", () => {
+    const { container } = render(<Projects />);
+    const titles = Array.from(
+      container.querySelectorAll('[data-slot="card-title"]'),
+    ).map((el) => el.textContent);
+    expect(titles[2]).toBe("Absensi Karyawan");
+  });
+
+  it("links Absensi Karyawan to its live demo and repo", () => {
+    render(<Projects />);
+    const card = cardFor("Absensi Karyawan");
+    expect(
+      within(card).getByRole("link", { name: /view demo/i }),
+    ).toHaveAttribute("href", "https://absensi-karyawan-five-liard.vercel.app/");
+    expect(
+      within(card).getByRole("link", { name: /view (code|source)/i }),
+    ).toHaveAttribute("href", "https://github.com/Vaninside/absensi-karyawan");
+  });
+
+  it("renders the Absensi Karyawan screenshot", () => {
+    render(<Projects />);
+    const card = cardFor("Absensi Karyawan");
+    expect(
+      within(card).getByRole("img", {
+        name: /absensi karyawan dashboard screenshot/i,
+      }),
+    ).toHaveAttribute("src", "/absensi.webp");
   });
 
   it("links StockFlow to its live demo and repo", () => {
